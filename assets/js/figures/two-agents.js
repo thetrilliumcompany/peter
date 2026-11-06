@@ -29,7 +29,7 @@
       // the ledger between them: Peter writes it, the Manager reads it
       s.wire(`M${PX + Rp + 6},${CY}H262`, "b", { arrow: 1, flow: { ms: 2200, n: 1 } });
       s.wire(`M338,${CY}H${MX - Rm - 8}`, "r", { arrow: 1, flow: { ms: 2200, n: 1 } });
-      s.rect(262, CY - 20, 76, 40, "k", { color: T.cell });
+      s.rect(262, CY - 20, 76, 40, "k", { card: true, color: T.cell });
       s.label(300, CY + 5, "ledger", { anchor: "middle", cls: "mono" });
       s.label(242, CY - 12, "writes", { anchor: "middle", cls: "mono" });
       s.label(366, CY - 12, "reads", { anchor: "middle", cls: "mono" });

@@ -35,6 +35,8 @@ window.Riso = (() => {
   const T = {
     bg: "#ffffff",      // the page, used to knock marks out of the lines behind them
     cell: "#ebebe6",    // a tile at rest
+    card: "#fbfbf8",    // a component card at rest (after cofounder.co: white, hairline edge, soft lift)
+    cardEdge: "#e2e2dc",
     ref: "#dcdcd6",     // a reference bar, the thing being compared against
     refDot: "#a9a8a4",  // a reference point
     rest: "#d6d6d0",    // a wire nothing is moving along
@@ -288,11 +290,49 @@ window.Riso = (() => {
     }
     // o.bg: a background band, so labels drawn on it keep their own colour
     rect(x, y, w, h, inks, o = {}) {
+      // a card at rest is white; say so up front, so labels on it stay dark
+      if (o.card && (!o.color || o.color === T.cell)) o = { ...o, color: T.card };
       const small = Math.min(w, h) < 5;
       if (!o.bg) this.note(x, y, w, h, inks, o, small);
       const f = this.fills(inks, o, small);
       if (o.color) { f.fill = o.color; delete f.stroke; f["fill-opacity"] = o.fade ?? 1; }
+      if (o.card) {
+        // a component as a card: white at rest, or its actor's tint with that tint's edge, lifted off the page
+        const tint = o.color;
+        const edge = Object.values(INK).find((c) => c.pale === tint)?.edge || (tint === T.card ? T.cardEdge : "#d3d3cd");
+        Object.assign(f, { fill: tint, stroke: edge, "stroke-width": 1 });
+        const rx = Math.min(6, Math.min(w, h) / 4);
+        // the lift: two faint shapes under the card instead of a blur filter, which would repaint with every animation frame
+        this.shapes.append(make("rect", { x: x - 0.5, y: y + 1.5, width: w + 1, height: h + 1.5, rx: rx + 1, fill: "#2b2622", "fill-opacity": 0.035 }));
+        this.shapes.append(make("rect", { x: x + 0.5, y: y + 1, width: w - 1, height: h, rx, fill: "#2b2622", "fill-opacity": 0.05 }));
+        this.shapes.append(make("rect", { x: x + 0.5, y: y + 0.5, width: w - 1, height: h - 1, rx, ...f }));
+        return;
+      }
       this.shapes.append(make("rect", { x, y, width: w, height: h, rx: small ? 0.5 : Math.min(3, Math.min(w, h) / 3), ...f }));
+    }
+    // A hatched band: diagonal lines clipped to a rounded box, for time something was broken.
+    hatch(x, y, w, h, o = {}) {
+      const id = `rf-h-${++avatarSeq}`, rx = o.rx ?? Math.min(3, h / 3), g = o.gap || 4.5, f = o.fade ?? 1;
+      const clip = make("clipPath", { id });
+      clip.append(make("rect", { x, y, width: w, height: h, rx }));
+      this.shapes.append(clip);
+      this.shapes.append(make("rect", { x, y, width: w, height: h, rx, fill: o.fill || "#ecebe6", "fill-opacity": f }));
+      let d = "";
+      for (let t = -h; t < w; t += g) d += `M${(x + t).toFixed(1)},${(y + h).toFixed(1)}l${h},${-h}`;
+      this.shapes.append(make("path", { d, fill: "none", stroke: o.color || "#b3b2ab", "stroke-width": o.sw || 1.3, "stroke-opacity": f, "clip-path": `url(#${id})` }));
+    }
+    // A time tick hanging under an axis, the I-beam cofounder.co puts under its time series.
+    ibeam(x, y, o = {}) {
+      const c = o.color || T.axis, a = o.cap ?? 3.5;
+      this.shapes.append(make("path", { d: `M${(x - a).toFixed(1)},${y}H${(x + a).toFixed(1)}M${x.toFixed(1)},${y}V${y + (o.len ?? 5)}`, fill: "none", stroke: c, "stroke-width": 1.2 }));
+    }
+    // A meter made of small squares, after cofounder.co's dashboards: v of 1 filled in colour,
+    // the rest at rest. Returns where it ended.
+    meter(x, y, w, h, v, color, o = {}) {
+      const gap = o.gap ?? 1.5, n = o.n || Math.max(1, Math.floor((w + gap) / (h + gap)));
+      const step = (w + gap) / n, cw = step - gap, on = Math.round(v * n);
+      for (let i = 0; i < n; i++) this.shapes.append(make("rect", { x: x + i * step, y, width: cw, height: h, rx: 0.6, fill: i < on ? color : (o.rest || T.cell) }));
+      return x + w;
     }
     // a small solid mark: 0 circle, 1 square, 2 triangle, all the same visual size
     mark(shape, cx, cy, r, inks, o = {}) {
@@ -421,6 +461,12 @@ window.Riso = (() => {
       this.shapes.append(make("circle", { cx, cy, r: r + 1, fill: T.bg }));
       this.shapes.append(make("image", { href, x: cx - r, y: cy - r, width: 2 * r, height: 2 * r, "clip-path": `url(#${id})`, preserveAspectRatio: "xMidYMid slice" }));
     }
+    // Initials in a light ring, the way cofounder.co draws people without a photo.
+    initials(cx, cy, r, text) {
+      this.shapes.append(make("circle", { cx, cy: cy + 1.2, r: r + 0.6, fill: "#2b2622", "fill-opacity": 0.06 }));
+      this.shapes.append(make("circle", { cx, cy, r, fill: T.card, stroke: "#d3d3cd", "stroke-width": 1 }));
+      this.label(cx, cy + 4.5, text, { anchor: "middle", cls: "strong bare" });
+    }
     // A legend row: a dot and a label per entry. Returns where it ended.
     legend(items, x, y, o = {}) {
       let cx = x;
@@ -465,7 +511,7 @@ window.Riso = (() => {
     measureBig(str, size) {
       const t = make("text", { class: "rf-big" });
       t.style.fontSize = `${size * 0.92}px`;
-      t.style.fontWeight = 700;
+      t.style.fontWeight = 400;
       t.textContent = str;
       this.ink.append(t);
       const w = t.getComputedTextLength();
@@ -707,7 +753,8 @@ window.Riso = (() => {
       document.querySelectorAll("figure[data-rf]").forEach(mount);
       document.dispatchEvent(new Event("press:ready"));
     };
-    if (document.fonts && document.fonts.ready) document.fonts.ready.then(go); else go();
+    // the pixel numerals are only used inside the figures, so ask for them before drawing
+    if (document.fonts && document.fonts.ready) Promise.all([document.fonts.ready, document.fonts.load('33px "Departure Mono"').catch(() => {})]).then(go); else go();
   }
   if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", start);
   else queueMicrotask(start);

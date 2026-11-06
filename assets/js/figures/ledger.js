@@ -22,7 +22,7 @@
       s.seam(SEAM, 34, SEAM, 252);
       // Peter, and the only way into the ledger
       const PY = LY + 2 * RH + 17;
-      s.rect(0, PY - 26, 96, 52, "b", { color: Riso.INK.b.pale });
+      s.rect(0, PY - 26, 96, 52, "b", { card: true, color: Riso.INK.b.pale });
       s.label(14, PY + 5, "peter", { cls: "strong" });
       s.wire(`M96,${PY}H${LX - 6}`, "b");
       s.port(SEAM, PY, "g", true, { color: Riso.INK.g.strong });
@@ -30,7 +30,7 @@
       // the tables
       ROWS.forEach(([n, c], i) => {
         const y = LY + i * RH;
-        s.rect(LX, y, LW, RH - 8, "k", { color: T.cell });
+        s.rect(LX, y, LW, RH - 8, "k", { card: true, color: T.cell });
         s.label(LX + 16, y + 22, n);
         s.label(LX + LW - 12, y + 22, c, { anchor: "end", cls: "mono" });
       });
@@ -40,7 +40,7 @@
       READERS.forEach(([name, ink], i) => {
         const y = LY + 17 + i * 52 + 4;
         s.wire(`M${LX + LW + 9},${y}H${RX - 6}`, ink, { color: color(ink), arrow: 1 });
-        s.rect(RX, y - 18, 160, 36, ink, { color: pale(ink) });
+        s.rect(RX, y - 18, 160, 36, ink, { card: true, color: pale(ink) });
         s.label(RX + 14, y + 5, name, { cls: "strong" });
       });
     });

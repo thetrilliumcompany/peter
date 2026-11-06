@@ -24,7 +24,7 @@
         if (direct) s.label(SEAM + 12, y - 9, "no model", { cls: "mono" });
         else s.port(SEAM, y, "g", true, { color: G });
       });
-      s.rect(RAIL, 34, 200, 202, "y", { color: Y.pale });
+      s.rect(RAIL, 34, 200, 202, "y", { card: true, color: Y.pale });
       s.rect(RAIL, 34, 4, 202, "y", { color: Y.mid });
       s.label(RAIL + 100, 132, "controller", { anchor: "middle", cls: "strong" });
       s.label(RAIL + 100, 151, "every 30 s", { anchor: "middle", cls: "mono" });

@@ -15,17 +15,32 @@
   }, (s, ui) => {
     let filter = null;
     const STAGES = ["agent", "trigger", "storyline", "outcome"];
-    const CX = [6, 140, 328, 522];
-    const NW = 14, TOP = 26, H = 452;
-    const tuples = HQ.flows.map(([a, t, st, o, n]) => ({ v: [a, t, st, o], n }));
+    const CX = [0, 150, 336, 500];
+    const NW = 10, TOP = 30, H = 430;
+    // Only the biggest blocks keep their own name; the long tail of small ones joins "other",
+    // so the picture shows the main roads instead of a hundred hairlines.
+    const KEEP = [2, 7, 6, 3];
+    const raw = HQ.flows.map(([a, t, st, o, n]) => ({ v: [a, t, st, o], n }));
+    const biggest = KEEP.map((k, c) => {
+      const m = new Map();
+      for (const f of raw) m.set(f.v[c], (m.get(f.v[c]) || 0) + f.n);
+      return new Set([...m].sort((a, b) => b[1] - a[1]).filter(([key]) => !/^(other|no_storyline)$/.test(key)).slice(0, k).map(([key]) => key));
+    });
+    const merged = new Map();
+    for (const f of raw) {
+      const v = f.v.map((x, c) => (biggest[c].has(x) ? x : "other"));
+      merged.set(v.join("|"), (merged.get(v.join("|")) || 0) + f.n);
+    }
+    const tuples = [...merged].map(([k, n]) => ({ v: k.split("|"), n }));
     const nodesAt = (c) => {
       const m = new Map();
       for (const f of tuples) m.set(f.v[c], (m.get(f.v[c]) || 0) + f.n);
-      return [...m].sort((a, b) => b[1] - a[1]);
+      // biggest first, "other" always last
+      return [...m].sort((a, b) => (a[0] === "other") - (b[0] === "other") || b[1] - a[1]);
     };
     const NODES = STAGES.map((_, c) => nodesAt(c));
     const totalRuns = tuples.reduce((a, f) => a + f.n, 0);
-    const GAP = 5;
+    const GAP = 10;
     const scale = Math.min(...NODES.map((col) => (H - GAP * (col.length - 1)) / totalRuns));
     const pos = NODES.map((col) => {
       let y = TOP; const out = new Map();
@@ -37,17 +52,13 @@
       let last = -99; const out = new Map();
       for (const [k] of col) {
         const [y, h] = pos[c].get(k);
-        const t = Math.max(y + Math.min(h, 22) / 2 + 4, last + 12.5);
+        const t = Math.max(y + Math.min(h, 34) / 2 + 4, last + 30);
         out.set(k, t); last = t;
       }
       return out;
     });
     s.paint(() => {
       STAGES.forEach((n, c) => s.label(CX[c], 14, n, { cls: "mono" }));
-      // the scale: how tall a block or ribbon is for 500 runs
-      const SY = TOP + H + 16, SH = 500 * scale;
-      s.rect(CX[0], SY, NW, SH, "k", { color: "#a9a8a4" });
-      s.label(CX[0] + NW + 6, SY + SH / 2 + 4, "height of 500 runs", { cls: "mono" });
       const live = filter ? tuples.filter((f) => f.v[filter[0]] === filter[1]) : tuples;
       for (let c = 0; c < 3; c++) {
         const links = new Map();
@@ -69,16 +80,19 @@
         stackInto((l) => l.b, (l) => pos[c].get(l.a)[0], pos[c + 1], "y1");
         for (const l of L) {
           // the smallest paths only appear once a block is picked
-          if (l.n < (filter ? 1 : 6)) continue;
-          s.ribbon(CX[c] + NW, CX[c + 1], l.y0, l.y1, Math.max(0.8, l.w), l.ag === "peter" ? "b" : "r", { opacity: filter ? 0.42 : 0.3 });
+          if (l.n < (filter ? 1 : 12)) continue;
+          s.ribbon(CX[c] + NW, CX[c + 1], l.y0, l.y1, Math.max(0.8, l.w), l.ag === "peter" ? "b" : "r", { opacity: filter ? 0.4 : 0.24 });
         }
       }
       NODES.forEach((col, c) => col.forEach(([k]) => {
         const [y, h] = pos[c].get(k);
         const on = filter && filter[0] === c && filter[1] === k;
         // nodes are neutral tiles; the picked one goes dark, the ribbons carry who
-        s.rect(CX[c], Math.round(y), NW, Math.max(3, Math.round(h)), "k", { color: on ? T.ink : "#a9a8a4" });
-        s.label(CX[c] + NW + 6, labelY[c].get(k), nice(k), { cls: on ? "strong" : "tiny" });
+        s.rect(CX[c], Math.round(y), NW, Math.max(3, Math.round(h)), "k", { color: on ? T.ink : "#8a8a84" });
+        // the name, and under it how many runs went through, on a halo so the ribbons don't cut through
+        const ly = labelY[c].get(k), n = col.find((q) => q[0] === k)[1];
+        s.label(CX[c] + NW + 7, ly - 3, nice(k), { cls: on ? "strong" : "" }).classList.add("halo");
+        s.label(CX[c] + NW + 7, ly + 12, `${fmt(Math.round(n))} runs`, { cls: "mono" }).classList.add("halo");
       }));
     });
     const read = () => {
@@ -94,7 +108,7 @@
       const [y, h] = pos[c].get(k), ly = labelY[c].get(k);
       const top = Math.min(y, ly - 11), bottom = Math.max(y + h, ly + 3);
       const go = () => { filter = filter && filter[0] === c && filter[1] === k ? null : [c, k]; s.arm(); s.redraw(); read(); };
-      s.spot(CX[c] - 4, top, 150, bottom - top, { label: nice(k), click: go });
+      s.spot(CX[c] - 4, top - 4, 150, bottom - top + 22, { label: nice(k), click: go });
     }));
     read();
   });

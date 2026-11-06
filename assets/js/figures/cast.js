@@ -10,7 +10,7 @@
   fig("cast", {
     w: 600,
     h: 380,
-    alt: "The company's org chart. At the top, us: three partners, paying a $7,187 model bill. Below us, the Manager on GPT-6 Astra. Below the Manager, Peter on Claude Opus 5.5, with 1,385 subagents under him. Beside Peter, on a dotted line, the controller, which uses no model.",
+    alt: "The company's org chart. At the top, us: three partners, paying a $7,187 model bill. Below us, the Manager on GPT-6 Astra. Below the Manager, Peter on Claude Opus 5.5, with 1,385 subagents under him. Beside Peter, on a dotted line, the controller, which nudges him.",
   }, (s) => {
     const CX = 264, BLUE = Riso.INK.b.strong, RED = Riso.INK.r.strong, AMBER = Riso.INK.y.strong;
     const UY = 30, MY = 134, PY = 256, LX = CX + 56;
@@ -24,9 +24,10 @@
       s.wire(`M${CX},${MY + 44}V${PY - 44}`, "r", { color: RED });
       const cx = 52, cy = PY;
       s.seam(cx + 36, cy, CX - 46, cy, { color: AMBER, dash: "4 4" });
+      // what travels along it
+      s.label((cx + 36 + CX - 46) / 2, cy + 22, "nudge", { anchor: "middle", fill: Riso.INK.y.strong }).style.fontStyle = "italic";
       // us
-      s.node(CX - 33, UY, 15, "k", { color: "#3d3a3a", knock: 0 });
-      s.label(CX - 33, UY + 5, "A", { anchor: "middle", cls: "strong", fill: "#fbfbf8" });
+      s.initials(CX - 33, UY, 15, "A");
       s.avatar(PFP.rohanth, CX, UY, 15, T.bg, { ring: 1 });
       s.avatar(PFP.shayaan, CX + 33, UY, 15, T.bg, { ring: 1 });
       name(LX, UY, "us", "$7,187 model bill");
@@ -42,8 +43,7 @@
       s.wire(`M${cx},${cy}V${cy - 16}`, "y", { color: T.ink, w: 2.5 });
       s.wire(`M${cx},${cy}L${cx + 11},${cy + 6}`, "y", { color: T.ink, w: 2.5 });
       s.wire(`M${cx - 26},${cy - 26}l-6,-6M${cx + 26},${cy - 26}l6,-6`, "y", { color: AMBER, w: 3 });
-      s.label(cx, cy + 54, "the controller", { anchor: "middle", cls: "strong" });
-      s.label(cx, cy + 73, "no model", { anchor: "middle", cls: "mono" });
+      s.label(cx, cy + 56, "the controller", { anchor: "middle", cls: "strong" });
       // and Peter's direct reports
       const DY = PY + 70;
       s.wire(`M${CX},${PY + 44}V${DY - 8}`, "b", { color: BLUE, w: 1.5 });

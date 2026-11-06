@@ -12,7 +12,7 @@
     w: 600,
     h: 280,
     tight: true,
-    alt: "Three panels. The first holds 7,103 dots, one per email or form note Peter sent; a small block of 171 in its corner got any reply. The second zooms into those 171: 23 were a person writing back. The third zooms into the 23: 12 didn't say no, 11 said no or asked to be removed, and one paid, $26 in all.",
+    alt: "Three panels. The first holds 7,103 dots, one per email or form note Peter sent; a small block of 171 in its corner got any reply. The second zooms into those 171: 23 were a person writing back. The third zooms into the 23: 12 didn't say no, 11 said no or asked to be removed, and one customer paid ($26).",
   }, (s) => {
     // n dots in rows of `cols`, from (x, y), g apart
     const grid = (n, cols, x, y, g) => Array.from({ length: n }, (_, i) => [x + (i % cols) * g, y + Math.floor(i / cols) * g]);
@@ -55,7 +55,7 @@
       head(f3[0], PEOPLE, "were a person");
       // key for the people, under the zooms
       const KY = f2[1] + f2[3] + 30;
-      [[C.notNo, `${NOT_NO} didn't say no`], [C.people, `${PEOPLE - NOT_NO} said no or asked to be removed`], [C.paid, "1 paid, $26 in all"]].forEach(([c, t], i) => {
+      [[C.notNo, `${NOT_NO} didn't say no`], [C.people, `${PEOPLE - NOT_NO} said no or asked to be removed`], [C.paid, "one customer ($26)"]].forEach(([c, t], i) => {
         s.mark(0, f2[0] + 5, KY + i * 22 - 4, 5.5, "b", { color: c });
         s.label(f2[0] + 17, KY + i * 22, t, { cls: i === 2 ? "strong" : "dim" });
       });

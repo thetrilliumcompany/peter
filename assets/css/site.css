@@ -14,8 +14,11 @@
   --face: "Hanken Grotesk", system-ui, -apple-system, sans-serif;
   --serif: "Instrument Serif", Georgia, serif;
   --mono: "IBM Plex Mono", ui-monospace, Menlo, monospace;
+  --pixel: "Departure Mono", "IBM Plex Mono", ui-monospace, monospace;
   --top: 72px;
 }
+/* Departure Mono: the pixel face for big numbers, after cofounder.co's dashboards */
+@font-face { font-family: "Departure Mono"; src: url("../fonts/DepartureMono-Regular.woff2") format("woff2"); font-display: swap; }
 * { box-sizing: border-box; }
 html { scroll-behavior: smooth; scroll-padding-top: calc(var(--top) + 24px); }
 @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
@@ -125,6 +128,16 @@ code { font: 400 0.88em var(--mono); color: var(--head); background: #ecece8; bo
   content: ""; position: absolute; left: 2px; top: 0.56em; width: 7px; height: 7px; border-radius: 50%;
   border: 1px solid var(--line2); background: var(--card);
 }
+/* prompt files and the lines quoted from them: file names in mono, quotes set off by a rule in the reader's colour */
+.col > ul.files code, .excerpt-label code { font: inherit; font-family: var(--mono); font-size: 0.9em; color: var(--head); background: none; padding: 0; }
+.col > p.excerpt-label { margin: 0 0 10px; font: 400 12px/1.4 var(--mono); color: var(--quiet); }
+.col > p.excerpt-label code { font-size: 1em; }
+.col > ul.excerpt { margin: 0 0 28px; padding: 2px 0 2px 20px; border-left: 2px solid var(--rule, var(--line2)); }
+.col > ul.excerpt > li { padding-left: 0; margin: 0 0 12px; color: var(--head); }
+.col > ul.excerpt > li:last-child { margin-bottom: 0; }
+.col > ul.excerpt > li::before { content: none; }
+.excerpt.peter { --rule: #8ec9f4; }
+.excerpt.manager { --rule: #f8a9a0; }
 .col > ol { counter-reset: n; }
 .col > ol > li { counter-increment: n; }
 .col > ol > li::before { content: counter(n); position: absolute; left: 0; top: 0.28em; font: 400 12px/1.4 var(--mono); color: var(--quiet); }
@@ -206,7 +219,8 @@ figure.rf-wide { width: 100%; }
   pointer-events: none; paint-order: stroke; stroke: var(--panel); stroke-width: 3px; stroke-linejoin: round;
   font-variant-numeric: tabular-nums;
 }
-.rf-big { font-family: var(--face); font-weight: 450; letter-spacing: -0.015em; font-variant-numeric: tabular-nums; pointer-events: none; }
+.rf-big { font-family: var(--pixel); font-weight: 400; letter-spacing: -0.02em; pointer-events: none; }
+.rf-t.halo { stroke: var(--paper); stroke-width: 5px; }
 .rf-t.bare, .rf-t.on-fill, .rf-t.on-dark, .rf-t.on-ink { stroke: none; }
 .rf-t.on-fill { fill: var(--ink); }
 .rf-t.on-dark { fill: #fbfbf8; }
@@ -217,7 +231,7 @@ figure.rf-wide { width: 100%; }
 .rf-t.tiny { fill: rgba(38, 35, 35, 0.62); font-size: 12px; font-weight: 460; }
 .rf-t.strong { font-weight: 660; fill: var(--ink); }
 .rf-t.big { font-size: 20px; font-weight: 520; letter-spacing: -0.008em; }
-.rf-t.huge { font-size: 33px; font-weight: 450; letter-spacing: -0.016em; }
+.rf-t.huge { font-family: var(--pixel); font-size: 33px; font-weight: 400; letter-spacing: -0.02em; }
 .rf-t.mono { font-family: var(--mono); font-size: 12px; font-weight: 400; letter-spacing: 0; }
 .rf-t.mono.strong { font-weight: 500; }
 .rf-t.mark-n { font: 500 12px var(--face); stroke: none; font-variant-numeric: tabular-nums; }

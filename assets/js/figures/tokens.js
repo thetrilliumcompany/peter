@@ -42,6 +42,8 @@
       ...KINDS.map(({ k, n, v }, i) => ({ type: "kind", k, y: BY + 16 + (i + 2) * 36 + (i + 2) * gap, n, v })),
     ];
     s.paint(() => {
+      // the marks sit on one card, lifted off the page like a dashboard panel
+      s.rect(BX, BY, BW, BH, "k", { card: true });
       marks.forEach(([ai, k], j) => {
         // hovering fades whatever isn't picked; nothing moves or resizes
         const off = sel && (sel.type === "agent" ? sel.ai !== ai : sel.k !== k);
@@ -49,7 +51,6 @@
         const [c, r] = cell(j);
         s.mark(k, X + c * G, Y + r * G, R, ink, { color: SHADE[ink][k], fade: off ? 0.2 : null });
       });
-      s.frame(BX, BY, BW, BH, "k");
       items.forEach((it) => {
         const on = sel && sel.type === it.type && (it.type === "agent" ? sel.ai === it.ai : sel.k === it.k);
         if (it.type === "agent") s.mark(0, KX + 6, it.y - 5, 6, AGENTS[it.ai].ink, { color: SHADE[AGENTS[it.ai].ink][1] });
@@ -57,11 +58,12 @@
         s.label(KX + 20, it.y, it.n, { cls: it.type === "agent" ? "strong" : "", fill: on ? "#262323" : null });
         s.label(KX + 20, it.y + 17, it.v, { cls: "dim", fill: on ? "#262323" : null });
       });
-      // three numbers along the bottom, then what one mark is worth
-      [["29.1 billion", "tokens"], ["$7,187", "at list price"], ["$276", "per $1 earned"]].forEach(([big, sub], i) => {
-        const x = KX + [0, 206, 340][i];
-        s.label(x - 2, NY, big, { cls: "huge" });
+      // three numbers along the bottom in the pixel face, each as wide as it needs, then what one mark is worth
+      let x = KX;
+      [["29.1b", "tokens"], ["$7,187", "at list price"], ["$276", "per $1 earned"]].forEach(([big, sub]) => {
+        s.label(x - 1, NY, big, { cls: "huge" });
         s.label(x, NY + 22, sub, { cls: "dim" });
+        x += Math.max(s.measure(big, { cls: "huge" }), s.measure(sub, { cls: "dim" })) + 44;
       });
       s.mark(0, BR - 54, NY - 11, R, "b", { color: SHADE.b[0] });
       s.label(BR, NY + 22, "100 million tokens", { anchor: "end", cls: "dim" });

@@ -24,7 +24,7 @@
       // the boundary of the VM
       s.seam(SEAM, 30, SEAM, 222);
       // Peter, and the bus his calls leave on
-      s.rect(0, ROW[1] - 30, 136, 60, "b", { color: Riso.INK.b.pale });
+      s.rect(0, ROW[1] - 30, 136, 60, "b", { card: true, color: Riso.INK.b.pale });
       s.label(14, ROW[1] + 5, "peter", { cls: "strong" });
       s.wire(`M136,${ROW[1]}H${BUS}`, "b");
       s.wire(`M${BUS},${ROW[0]}V${ROW[2]}`, "b");
@@ -37,7 +37,7 @@
         s.wire(`M${SEAM},${y}H${TX}`, "g", { color: C.proxy, flow: { ms: 1600, n: 2 } });
         s.node(BUS, y, 5, "b");
         s.port(SEAM, y, "g", true, { color: C.proxy });
-        s.rect(TX, y - 22, 160, 44, "g", { color: Riso.INK.g.pale });
+        s.rect(TX, y - 22, 160, 44, "g", { card: true, color: Riso.INK.g.pale });
         s.label(TX + 16, y + 5, name, { cls: "strong" });
       });
     });

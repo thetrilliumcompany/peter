@@ -16,7 +16,7 @@
     w: 600,
     h: 156,
     tight: true,
-    alt: "Peter's logged actions, ten to a dot: 3,884 emails, 3,196 contact forms, 1,232 calls and 122 email replies. Below them, a single black dot: one customer paid, $26 in all.",
+    alt: "Peter's logged actions, ten to a dot: 3,884 emails, 3,196 contact forms, 1,232 calls and 122 email replies. Below them, a single black dot: one customer ($26).",
   }, (s) => {
     const NX = 40, LX = 48, X = 140, R = 596, G = 6.4, DOT = 4.6;
     const PR = Math.floor((R - X) / G) + 1;
@@ -33,7 +33,7 @@
       s.label(NX, y + 4, "1", { anchor: "end", cls: "strong" });
       s.label(LX, y + 4, "paid", { cls: "dim" });
       s.marks([X, y], "k", { dot: DOT + 1.2, color: "#262323" });
-      s.label(X + 10, y + 4, "one customer, $26 in all", { cls: "dim" });
+      s.label(X + 10, y + 4, "one customer ($26)", { cls: "dim" });
       // what one dot is worth, in the empty corner
       s.marks([R - 74, y], "b", { dot: DOT });
       s.label(R, y + 4, "= 10 actions", { anchor: "end", cls: "dim" });

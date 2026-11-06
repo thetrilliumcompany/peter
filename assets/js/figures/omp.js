@@ -47,7 +47,7 @@
       lanes.forEach((l, i) => {
         const x = POOL + (i % 4) * 68, y = 52 + Math.floor(i / 4) * 54;
         if (l.dead) { s.rect(x, y, 60, 46, "k", { color: T.bg }); s.frame(x, y, 60, 46, "k", { gap: 1 }); return; }
-        s.rect(x, y, 60, 46, "k", { color: l.t > 0.94 ? Riso.INK.b.pale : T.cell });
+        s.rect(x, y, 60, 46, "k", { card: true, color: l.t > 0.94 ? Riso.INK.b.pale : T.cell });
         s.rect(x + 7, y + 7 + 32 * (1 - l.t), 5, Math.max(1, 32 * l.t), "b", { color: l.t > 0.94 ? Riso.INK.b.strong : Riso.INK.b.mid });
       });
       s.label(POOL, 232, "× 1,385", { cls: "strong" });

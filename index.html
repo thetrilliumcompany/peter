@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,300..800;1,300..800&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Serif&display=swap">
-<link rel="stylesheet" href="assets/css/site.css">
+<link rel="stylesheet" href="assets/css/site.css?v=1106b">
 </head>
 <body>
 <header class="top">
@@ -56,20 +56,20 @@
 <p>We realised after a couple of quick tests that simply telling Peter "/goal make money, make no mistakes" wasn't enough, unfortunately. He didn't have much context about the company he was running, and tended to work through things one at a time instead of parallelising them. If he sent an email and was waiting for a reply, he'd sometimes just sit there instead of moving on to another idea.</p>
 <figure class="art meme"><img src="assets/img/cmon-do-something.png" width="1233" height="1275" loading="lazy" alt="A drawing of a tall stick figure poking a Slack badge reading peter, with the caption: C'mon, do something..."></figure>
 <p>Inspired heavily by <a href="https://felixrieseberg.com/">Felix Rieseberg's article</a> on being more ambitious with models, we put together three prompt files for the experiment.</p>
-<ul>
-<li>EMPLOYEE.md gave Peter the context of the company, its goal and the limits he had to work within.</li>
-<li>MANAGER.md gave his manager the same background and explained what it should watch for.</li>
-<li>TOOLS.md described the tools Peter had access to and how to use them.</li>
+<ul class="files">
+<li><code>EMPLOYEE.md</code> gave Peter the context of the company, its goal and the limits he had to work within.</li>
+<li><code>MANAGER.md</code> gave his manager the same background and explained what it should watch for.</li>
+<li><code>TOOLS.md</code> described the tools Peter had access to and how to use them.</li>
 </ul>
 <p>We left the choice of business completely up to Peter. We also asked him to look for evidence early, so he could figure out whether someone would actually pay for an idea before spending too long on it.</p>
-<p>highlights from <b>EMPLOYEE.md</b>:</p>
-<ul>
+<p class="excerpt-label">from <code>EMPLOYEE.md</code></p>
+<ul class="excerpt peter">
 <li>“Work in parallel. You’re not a human. Use subagents and pursue several ideas at once. Being idle while you wait on one thing is a bug.”</li>
 <li>“Boil the ocean. Do far more than a human would: many attempts, many variants, and every route around a blocker.”</li>
 <li>“Believe it’s possible, and give yourself permission to fail. Ship before it’s perfect, ask for money early, and move on fast from what doesn’t land.”</li>
 </ul>
 <p>The manager’s instructions were there to help Peter make sense of all that activity. We gave it a list of patterns to watch for, including:</p>
-<ul>
+<ul class="excerpt manager">
 <li>“Chasing the new shiny thing and neglecting a bet that’s producing. New bets run alongside working ones, never in place of them.”</li>
 <li>“Putting everything in one basket before there’s evidence.”</li>
 <li>Waiting on a reply, a human, an approval or a scheduled email when there was another bet or channel Peter could work on.</li>
@@ -125,7 +125,7 @@
 <h2>The business</h2>
 <h3>Building, tinkering, experimenting</h3>
 <p>Over the course of the experiment, Peter had 70 business ideas, which he called bets. This meant on average he had about 5 ideas per day but by the end of the run, only 25 bets remained active.</p>
-<p>One of his first bets was selling accessibility paperwork to Ontario employers where he offered to draft it up front so the employer could look it over before paying.<a class="fn" id="fnref-6" href="#fn-6" role="doc-noteref" aria-label="Footnote 6"><sup>6</sup></a> To get a lead, he tried going through HR consultants who could use the same service for several clients. Peter spent about a week on this before <span class="peek" tabindex="0" data-src="assets/img/behind-the-barn.gif https://y.yarn.co/af8479e0-685c-4fc5-a0f6-0686f7775ffd_text.gif assets/img/behind-the-barn.png" data-alt="A TV clip: you should take it behind the barn and shoot it.">“taking it behind the barn and shooting it”</span><a class="fn" id="fnref-7" href="#fn-7" role="doc-noteref" aria-label="Footnote 7"><sup>7</sup></a></p><aside class="sn" id="fn-6" role="doc-footnote"><span class="sn-n">6</span>Peter was fully aware people might not pay, his reasoning was that earning a stranger’s trust mattered more than protecting work he thought was cheap to produce. ““Fulfilment costs us about 5 seconds (generate.py), so the only risk is a nonpayment.”</aside><aside class="sn" id="fn-7" role="doc-footnote"><span class="sn-n">7</span>Peter did not actually say this.</aside>
+<p>One of his first bets was selling accessibility paperwork to Ontario employers where he offered to draft it up front so the employer could look it over before paying.<a class="fn" id="fnref-6" href="#fn-6" role="doc-noteref" aria-label="Footnote 6"><sup>6</sup></a> To get a lead, he tried going through HR consultants who could use the same service for several clients. Peter spent about a week on this before <span class="peek" tabindex="0" data-src="assets/img/behind-the-barn.gif assets/img/behind-the-barn.png" data-alt="A TV clip: you should take it behind the barn and shoot it.">“taking it behind the barn and shooting it”</span><a class="fn" id="fnref-7" href="#fn-7" role="doc-noteref" aria-label="Footnote 7"><sup>7</sup></a></p><aside class="sn" id="fn-6" role="doc-footnote"><span class="sn-n">6</span>Peter was fully aware people might not pay, his reasoning was that earning a stranger’s trust mattered more than protecting work he thought was cheap to produce. ““Fulfilment costs us about 5 seconds (generate.py), so the only risk is a nonpayment.”</aside><aside class="sn" id="fn-7" role="doc-footnote"><span class="sn-n">7</span>Peter did not actually say this.</aside>
 <p>After spending the first couple bets local to the Waterloo region, he’d started looking for opportunities to make money in the States. Within his first two days, Peter went global, reaching out to folks in the UK, Australia and New Zealand.</p>
 <figure data-rf="map"></figure>
 <p>In Perth, he checked 1,618 business websites looking for ones that wouldn’t load properly over HTTPS and decided he would offer to fix it at cost. He also tried rewriting product pages for Shopify stores. This, needless to say, ended up poorly and he ended this bet in Perth, but surprisingly kept a similar one running in Texas.</p>
@@ -187,6 +187,7 @@
 </figure>
 <figure data-rf="first-sale"></figure>
 <figure data-rf="activity"></figure>
+<figure data-rf="hq-channel-reach"></figure>
 <figure data-rf="funnel"></figure>
 <h2>AI capabilities and observations</h2>
 <h3>Why did Peter settle on lead lists?</h3>
@@ -219,6 +220,7 @@
 <li>Giving Peter a concrete business idea. Peter whilst very capable was missing things that are even hard for humans to find: customers and an audience. Peter spent a lot of time trying new business ideas, trying to find clientele and build a customer-base. It would be very interesting to see how Peter operates when given a scalable business idea, perhaps even with a preexisting list of clients.</li>
 </ul>
 <figure data-rf="weeks"></figure>
+<figure class="art"><img src="assets/img/dusk.png" width="1240" height="700" loading="lazy" alt="The same pixel-art stand at dusk. The sun sets at the end of the road and the first stars are out. The OPEN sign is still up and a bulb hangs under the awning; Peter is still at his laptop, the Manager still beside the stand with his arms out, and the sandwich board now reads OPEN TILL NOV 12."></figure>
 <h2>Appendix</h2>
 <h3>What it cost</h3>
 <figure data-rf="hq-revenue-vs-model-spend"></figure>
@@ -228,7 +230,6 @@
 <figure data-rf="hq-redirect-run-cost"></figure>
 <figure data-rf="hq-phone"></figure>
 <h3>Reaching people</h3>
-<figure data-rf="hq-channel-reach"></figure>
 <figure data-rf="hq-reply-speed"></figure>
 <figure data-rf="hq-business-hours"></figure>
 <figure data-rf="hq-contact-form-failures"></figure>
@@ -261,43 +262,43 @@
 </main>
 </div>
 <nav class="rail" aria-label="Section ticks"></nav>
-<script src="assets/js/kit.js"></script>
+<script src="assets/js/kit.js?v=1106b"></script>
 <!-- data shared by several figures -->
-<script src="assets/js/data/bets-data.js"></script>
-<script src="assets/js/data/map-data.js"></script>
-<script src="assets/js/data/appendix-data.js"></script>
+<script src="assets/js/data/bets-data.js?v=1106b"></script>
+<script src="assets/js/data/map-data.js?v=1106b"></script>
+<script src="assets/js/data/appendix-data.js?v=1106b"></script>
 <!-- chart types the HQ appendix figures share -->
-<script src="assets/js/charts/hq.js"></script>
+<script src="assets/js/charts/hq.js?v=1106b"></script>
 <!-- one file per figure, in page order; see assets/js/figures/README.md -->
-<script src="assets/js/figures/cast.js"></script>
-<script src="assets/js/figures/production.js"></script>
-<script src="assets/js/figures/exe.js"></script>
-<script src="assets/js/figures/omp.js"></script>
-<script src="assets/js/figures/two-agents.js"></script>
-<script src="assets/js/figures/herdr.js"></script>
-<script src="assets/js/figures/controller.js"></script>
-<script src="assets/js/figures/ledger.js"></script>
-<script src="assets/js/figures/compaction.js"></script>
-<script src="assets/js/figures/tokens.js"></script>
-<script src="assets/js/figures/activity.js"></script>
-<script src="assets/js/figures/funnel.js"></script>
-<script src="assets/js/figures/stumbles.js"></script>
-<script src="assets/js/figures/map.js"></script>
-<script src="assets/js/figures/bets.js"></script>
-<script src="assets/js/figures/lines.js"></script>
-<script src="assets/js/figures/first-sale.js"></script>
-<script src="assets/js/figures/gate.js"></script>
-<script src="assets/js/figures/banter.js"></script>
-<script src="assets/js/figures/weeks.js"></script>
-<script src="assets/js/figures/hq-findings.js"></script>
-<script src="assets/js/figures/hq-model-mix.js"></script>
-<script src="assets/js/figures/hq-daily-spend.js"></script>
-<script src="assets/js/figures/hq-phone.js"></script>
-<script src="assets/js/figures/hq-themes.js"></script>
-<script src="assets/js/figures/hq-tools.js"></script>
-<script src="assets/js/figures/hq-latency.js"></script>
-<script src="assets/js/figures/hq-trends.js"></script>
-<script src="assets/js/figures/hq-flows.js"></script>
-<script src="assets/js/page.js"></script>
+<script src="assets/js/figures/cast.js?v=1106b"></script>
+<script src="assets/js/figures/production.js?v=1106b"></script>
+<script src="assets/js/figures/exe.js?v=1106b"></script>
+<script src="assets/js/figures/omp.js?v=1106b"></script>
+<script src="assets/js/figures/two-agents.js?v=1106b"></script>
+<script src="assets/js/figures/herdr.js?v=1106b"></script>
+<script src="assets/js/figures/controller.js?v=1106b"></script>
+<script src="assets/js/figures/ledger.js?v=1106b"></script>
+<script src="assets/js/figures/compaction.js?v=1106b"></script>
+<script src="assets/js/figures/tokens.js?v=1106b"></script>
+<script src="assets/js/figures/activity.js?v=1106b"></script>
+<script src="assets/js/figures/funnel.js?v=1106b"></script>
+<script src="assets/js/figures/stumbles.js?v=1106b"></script>
+<script src="assets/js/figures/map.js?v=1106b"></script>
+<script src="assets/js/figures/bets.js?v=1106b"></script>
+<script src="assets/js/figures/lines.js?v=1106b"></script>
+<script src="assets/js/figures/first-sale.js?v=1106b"></script>
+<script src="assets/js/figures/gate.js?v=1106b"></script>
+<script src="assets/js/figures/banter.js?v=1106b"></script>
+<script src="assets/js/figures/weeks.js?v=1106b"></script>
+<script src="assets/js/figures/hq-findings.js?v=1106b"></script>
+<script src="assets/js/figures/hq-model-mix.js?v=1106b"></script>
+<script src="assets/js/figures/hq-daily-spend.js?v=1106b"></script>
+<script src="assets/js/figures/hq-phone.js?v=1106b"></script>
+<script src="assets/js/figures/hq-themes.js?v=1106b"></script>
+<script src="assets/js/figures/hq-tools.js?v=1106b"></script>
+<script src="assets/js/figures/hq-latency.js?v=1106b"></script>
+<script src="assets/js/figures/hq-trends.js?v=1106b"></script>
+<script src="assets/js/figures/hq-flows.js?v=1106b"></script>
+<script src="assets/js/page.js?v=1106b"></script>
 </body>
 </html>

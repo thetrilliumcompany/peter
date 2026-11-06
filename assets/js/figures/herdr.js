@@ -27,7 +27,7 @@
           // a dead pane, the way Tinker draws a failed GPU
           s.frame(x, TY, TW, TH, "k", { gap: 1 });
         } else {
-          s.rect(x, TY, TW, TH, p.ink, { color: st === "restarting" ? Riso.INK.y.pale : st === "working" ? Riso.INK[p.ink].pale : T.cell });
+          s.rect(x, TY, TW, TH, p.ink, { card: true, color: st === "restarting" ? Riso.INK.y.pale : st === "working" ? Riso.INK[p.ink].pale : T.cell });
           if (st === "working" || st === "restarting") s.rect(x, TY, 4, TH, p.ink, { color: st === "restarting" ? Riso.INK.y.mid : col });
         }
         s.label(x + 16, TY + 26, p.n, { cls: "strong" });
@@ -52,7 +52,7 @@
         else s.wire(`M${x},${VY}V${SEAM + 10}`, "k", { on: false, w: 1.5 });
         s.port(x, SEAM, "k", on, { color: T.ink, r: 5 });
         if (!on) s.label(x + 12, SEAM + 22, "detached", { cls: "mono" });
-        s.rect(x - 60, VY, 120, 38, "k", { color: T.cell });
+        s.rect(x - 60, VY, 120, 38, "k", { card: true, color: T.cell });
         s.label(x, VY + 24, name, { anchor: "middle", cls: on ? "strong" : "dim" });
       });
     });

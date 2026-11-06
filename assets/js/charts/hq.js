@@ -178,7 +178,7 @@
       s.paint(() => {
         if (f.axis) s.label(2, 12, f.axis[0], { cls: "mono" });
         s.hgrid(X0, X1, [0, 0.2, 0.4].filter((v) => v < max), py, (v) => `${Math.round(v * 100)}%`);
-        days.forEach((d, i) => { if (i % 3 === 0) s.label(px(i), Y0 + 20, dayLabel(d), { anchor: "middle", cls: "tiny" }); });
+        days.forEach((d, i) => { if (i % 3 === 0) { s.ibeam(px(i), Y0 + 3); s.label(px(i), Y0 + 22, dayLabel(d), { anchor: "middle", cls: "tiny" }); } });
         s.guide(px(sel), Y0 - H, px(sel), Y0);
         for (const q of [...S].sort((a, b) => (a.hi ? 1 : 0) - (b.hi ? 1 : 0))) {
           const d = q.pts.map((p, i) => `${i ? "L" : "M"}${px(i).toFixed(1)},${py(p.y).toFixed(1)}`).join("");
@@ -483,7 +483,10 @@
           y -= h;
         });
         // day labels every third day, whichever day is in focus; its date is written in the corner
-        if (i % 3 === 0) s.label(X + i * cw + cw / 2, TOP + 178, dayLabel(d), { anchor: "middle", cls: "tiny", fill: i === pick ? "#262323" : null });
+        if (i % 3 === 0) {
+          s.ibeam(X + i * cw + cw / 2, TOP + 162, { color: i === pick ? T.ink : T.axis });
+          s.label(X + i * cw + cw / 2, TOP + 181, dayLabel(d), { anchor: "middle", cls: "tiny", fill: i === pick ? "#262323" : null });
+        }
       });
     });
     cfg.days.forEach((d, i) => {
