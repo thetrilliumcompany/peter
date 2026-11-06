@@ -148,10 +148,8 @@ code { font: 400 0.88em var(--mono); color: var(--head); background: #ecece8; bo
 /* tables in the text sit on the page like the figures: hairline rows, a mono header, no card */
 table { width: 100%; border-collapse: collapse; font-size: 14.5px; line-height: 1.45; margin: 30px 0 34px; }
 td { padding: 10px 16px 10px 0; border-top: 1px solid var(--line2); vertical-align: top; }
-.col > table td { border-top: 0; padding: 10px 14px; }
-.col > table tr:nth-child(odd):not(:first-child) td { background: #f4f4f1; }
-.col > table tr:nth-child(2) td:first-child, .col > table tr:last-child td:first-child { border-radius: 0; }
-.col > table tr:first-child td { border-top: 0; padding: 0 14px 8px; font: 400 12px/1.4 var(--mono); color: var(--quiet); }
+.col > table td { padding: 10px 14px 10px 0; }
+.col > table tr:first-child td { border-top: 0; padding: 0 14px 8px 0; font: 400 12px/1.4 var(--mono); color: var(--quiet); }
 .col > table tr:first-child td b { font-weight: 400; color: inherit; }
 
 .todo { background: #fff6de; border-radius: 3px; padding: 0 3px; }
@@ -339,21 +337,3 @@ figure.rf figcaption { margin-top: 12px; font-size: 13px; line-height: 1.48; col
 }
 
 @media print { .rf-stage svg { visibility: visible !important; } .rf-flow, .rf-play { display: none; } }
-
-/* ---------- edit mode (only on the local edit server, see tools/edit-server.py) ---------- */
-.edit-btn {
-  font: 400 13px/1 var(--mono); color: var(--body); background: none; cursor: pointer;
-  border: 1px solid var(--line2); border-radius: 6px; padding: 8px 12px; margin-right: 4px;
-}
-.edit-btn:hover { color: var(--ink); border-color: #c9c9c3; }
-body.editing .edit-btn { color: #fff; background: var(--blue); border-color: var(--blue); }
-.edit-bar {
-  position: sticky; top: var(--top); z-index: 29; display: flex; justify-content: space-between; gap: 16px;
-  padding: 7px 20px; font: 400 12px/1.4 var(--mono); color: #026dbb; background: #eef6fd; border-bottom: 1px solid #c0e1f9;
-}
-.edit-bar[hidden] { display: none; }
-.edit-state { color: var(--quiet); white-space: nowrap; }
-.edit-state.bad { color: #c73322; }
-body.editing [data-edit-i] { outline: none; border-radius: 3px; transition: background-color 0.15s; cursor: text; }
-body.editing [data-edit-i]:hover { background: #f5f9fd; }
-body.editing [data-edit-i]:focus { background: #eef6fd; box-shadow: 0 0 0 4px #eef6fd; }
