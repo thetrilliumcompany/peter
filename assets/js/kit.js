@@ -33,7 +33,7 @@ window.Riso = (() => {
   };
   // The neutral set every figure shares: page, rest, reference and the lines that only organise.
   const T = {
-    bg: "#f5f5f2",      // the page, used to knock marks out of the lines behind them
+    bg: "#ffffff",      // the page, used to knock marks out of the lines behind them
     cell: "#ebebe6",    // a tile at rest
     ref: "#dcdcd6",     // a reference bar, the thing being compared against
     refDot: "#a9a8a4",  // a reference point
