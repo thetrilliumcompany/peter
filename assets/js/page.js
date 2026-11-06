@@ -35,7 +35,7 @@
           li.classList.add("has-kids");
           li.prepend(btn);
           li.append(sub);
-          setOpen(li, true);
+          setOpen(li, h.id !== "appendix");
           btn.addEventListener("click", () => { setOpen(li, !li.classList.contains("open")); sync(); });
         }
       } else {
