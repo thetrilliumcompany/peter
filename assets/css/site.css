@@ -208,7 +208,9 @@ figure.art { margin: 36px 0 40px; }
 /* ---------- a figure: outer edge, inner panel ---------- */
 figure { margin: 0; }
 /* figures sit straight on the page: no border, no panel */
-figure[id] { scroll-margin-top: calc(var(--top) + 24px); }
+.back-float { position: fixed; left: 50%; bottom: 28px; transform: translateX(-50%); z-index: 40; margin: 0; }
+.back-float[hidden] { display: none; }
+@media print { .back-float { display: none; } }
 figure.rf { margin: 36px 0 40px; padding: 0; border: 0; background: none; }
 /* a run of figures (the appendix) gets more air between them than text does */
 figure.rf + figure.rf { margin-top: 56px; }
@@ -284,14 +286,18 @@ figure.mail { display: flex; flex-direction: column; gap: 10px; margin: 24px 0 3
 .msg.peter { align-self: flex-end; background: #e6f3fd; }
 .msg p { margin: 0; font-size: 14.5px; line-height: 1.48; color: var(--ink); }
 .msg .para { font-style: italic; }
+.msg-note { align-self: center; font: 400 12px/1.3 var(--mono); color: var(--quiet); }
 .msg-head { margin-bottom: 3px; font: 400 12px/1.3 var(--mono); color: var(--quiet); }
 .msg.paid { background: #282828; }
 .msg.paid p { color: #fbfbf8; font-weight: 560; }
 .msg.paid .msg-head { color: rgba(251, 251, 248, 0.7); }
 @media (max-width: 620px) { .msg { max-width: 92%; } }
+/* the picked pin's story, in page text under the map; the height holds so the page doesn't jump between pins */
+.map-story { margin-top: 12px; padding-top: 14px; border-top: 1px solid var(--line); min-height: 118px; font-size: 15px; line-height: 1.45; color: var(--body); }
+.map-story b { color: var(--ink); font-size: 16.5px; }
 .map-list { list-style: none; margin: 6px 0 0; padding: 0; }
-.map-list li { display: grid; grid-template-columns: 52px minmax(0, 1fr); gap: 8px; margin: 3px 0; }
-.map-list span { color: var(--quiet); font-variant-numeric: tabular-nums; }
+.map-list li { display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 10px; margin: 4px 0; }
+.map-list span { font: 400 12.5px/1.75 var(--mono); color: var(--quiet); text-transform: lowercase; }
 .rf-readout q { quotes: "“" "”"; }
 figure.rf figcaption { margin-top: 12px; font-size: 13px; line-height: 1.48; color: var(--quiet); }
 .rf-extra { overflow-x: auto; }

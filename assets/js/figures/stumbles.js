@@ -40,6 +40,8 @@
     const row = ([what, a, b, kind, fix, partly], y) => {
       const c = y + RH / 2, xa = dx(a);
       s.label(0, c + 4.5, what);
+      const mark = /gmail/i.test(what) ? "gmail" : /xai/i.test(what) ? "xai" : null;
+      if (mark) s.icon(mark, s.measure(what) + 7, c - 6, 12, "#8f8e8a");
       if (b === null) {
         // never fixed: a dashed line from the day it broke off the edge of the chart
         // the dashed line stops short of the note at the end, so nothing shows through the text

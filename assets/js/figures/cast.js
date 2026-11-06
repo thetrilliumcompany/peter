@@ -28,14 +28,14 @@
       s.label((cx + 36 + CX - 46) / 2, cy + 22, "nudge", { anchor: "middle", fill: Riso.INK.y.strong }).style.fontStyle = "italic";
       // us
       s.initials(CX - 33, UY, 15, "A");
-      s.avatar(PFP.rohanth, CX, UY, 15, T.bg, { ring: 1 });
-      s.avatar(PFP.shayaan, CX + 33, UY, 15, T.bg, { ring: 1 });
+      s.avatar(PFP.rohanth, CX, UY, 15);
+      s.avatar(PFP.shayaan, CX + 33, UY, 15);
       name(LX, UY, "us", "$6,571 model bill");
       // the manager
-      s.avatar(PFP.manager, CX, MY, 38, RED);
+      s.avatar(PFP.manager, CX, MY, 38);
       name(LX, MY, "the manager", "gpt-6 astra");
       // peter
-      s.avatar(PFP.peter, CX, PY, 38, BLUE);
+      s.avatar(PFP.peter, CX, PY, 38);
       name(LX, PY, "peter", "claude opus 5.5");
       // the controller, as the alarm clock it is
       s.port(cx, cy, "y", false, { color: AMBER, r: 30 });

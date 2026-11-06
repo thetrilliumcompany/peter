@@ -51,7 +51,8 @@
       rows.forEach((r, i) => {
         const kx = 2 + i * cw, on = sel === i;
         s.rect(kx, KY - 9, 10, 10, "b", { color: COLOR[r.model] });
-        s.label(kx + 16, KY, MODEL[r.model].replace("claude ", ""), { cls: "strong", fill: on ? "#262323" : null });
+        s.icon(r.model.startsWith("gpt") ? "openai" : "claude", kx + 15, KY - 10.5, 13, "#3a3a38");
+        s.label(kx + 32, KY, MODEL[r.model].replace("claude ", ""), { cls: "strong", fill: on ? "#262323" : null });
         s.label(kx, KY + 18, `$${fmt(Math.round(r.cost))}`, { cls: "tiny", fill: on ? "#262323" : null });
         s.label(kx, KY + 34, `${fmt(r.calls)} calls`, { cls: "tiny", fill: on ? "#262323" : null });
       });

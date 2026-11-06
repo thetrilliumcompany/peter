@@ -216,5 +216,38 @@
     }
   }
 
-  document.addEventListener("press:ready", () => { contents(); sideNotes(); peeks(); });
+  // A footnote can link to a chart in the appendix. The jump keeps a button on screen that returns
+  // the reader to the same spot, however far they wander in between.
+  function backButton() {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = "btn back-float";
+    btn.textContent = "↑ Back to where you were";
+    btn.hidden = true;
+    document.body.append(btn);
+    let from = null, top = 0, left = false;
+    const hide = () => { btn.hidden = true; from = null; };
+    document.addEventListener("click", (e) => {
+      const a = e.target.closest('a[href^="#fig-"]');
+      if (!a) return;
+      // a second jump from the appendix still goes back to the first place in the article
+      if (!from) { from = a; top = a.getBoundingClientRect().top; left = false; }
+      btn.hidden = false;
+    });
+    btn.addEventListener("click", () => {
+      scrollBy({ top: from.getBoundingClientRect().top - top });
+      history.replaceState(null, "", location.pathname + location.search);
+      hide();
+    });
+    // scrolling back to the spot by hand makes the button pointless
+    addEventListener("scroll", () => {
+      if (!from) return;
+      const near = Math.abs(from.getBoundingClientRect().top - top) < innerHeight / 3;
+      if (!near) left = true;
+      else if (left) hide();
+    }, { passive: true });
+    addEventListener("popstate", () => { if (from && !location.hash) hide(); });
+  }
+
+  document.addEventListener("press:ready", () => { contents(); sideNotes(); peeks(); backButton(); });
 })();

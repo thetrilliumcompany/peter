@@ -184,6 +184,12 @@
           const d = q.pts.map((p, i) => `${i ? "L" : "M"}${px(i).toFixed(1)},${py(p.y).toFixed(1)}`).join("");
           s.wire(d, "k", { color: color(q), w: q.hi ? 2.5 : 2 });
         }
+        // a dotted line of best fit through the series the chart is about
+        if (f.trend) for (const q of S.filter((v) => v.hi)) {
+          const n = q.pts.length, mx = (n - 1) / 2, my = q.pts.reduce((a, p) => a + p.y, 0) / n;
+          const slope = q.pts.reduce((a, p, i) => a + (i - mx) * (p.y - my), 0) / q.pts.reduce((a, _, i) => a + (i - mx) ** 2, 0);
+          s.guide(px(0), py(my - slope * mx), px(n - 1), py(my + slope * mx), { color: accent(base) });
+        }
         S.forEach((q) => {
           const last = q.pts[q.pts.length - 1];
           s.label(X1 + 8, py(last.y) + 4, q.name, { cls: q.hi ? "strong" : "dim" });

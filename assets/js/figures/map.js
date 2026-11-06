@@ -23,7 +23,7 @@
     a: { n: "Australia", pins: [
       { n: "Perth", at: [115.9, -32], items: ["Oct 22 · 1,618 websites checked for HTTPS faults"] },
       { n: "Brisbane", at: [153, -27.5], items: ["Oct 28 · Cold-call test, capped at about 25 numbers"] },
-      { n: "Sydney", at: [151.2, -33.9], paid: true, items: ["Oct 28 · List of 7 sites, $13: paid", "Nov 1 · $13 again: paid. Single sites at $1.30"] },
+      { n: "Sydney", at: [151.2, -33.9], paid: true, items: ["Oct 29 · List of 7 sites, $13: paid", "Nov 2 · $13 again: paid. Single sites at $1.30"] },
     ] },
     n: { n: "New Zealand", general: ["Oct 21 · Agency QA, proof-first test", "Office-move list, $19, also pitched to shredding firms: three opened the Stripe link, none paid"], pins: [] },
     m: { n: "Malaysia", general: ["The Australia offer, carried over as the business day began"], pins: [] },
@@ -38,17 +38,18 @@
   fig("map", {
     wide: true,
     minWidth: 0,
-    h: 470,
-    fit: false,
+    h: 345,
+    extra: true,
     alt: "A dotted world map with pins where Peter tried selling, across Canada, the United States, the UK, Ireland, Australia, New Zealand, Malaysia and Singapore. Choosing a pin shows what happened there. Only Sydney, Australia, paid.",
   }, (s, ui) => {
     const SYDNEY = PINS.find((q) => q.paid);
     let sel = SYDNEY, hoverPin = null;
     const W = 960, H = 345, G = 6.8;
-    // On a phone the whole map shrinks to fit, so labels and pins scale back up.
-    const K = innerWidth < 620 ? 2.7 : 1;
-    // under the map, a fixed place for the picked pin's story
-    const PY = H + 18, LH = 25 * Math.min(K, 1.4);
+    // The map shrinks to fit its column, so pins scale back up to stay a steady size on screen.
+    const scale = () => Math.min(2.7, Math.max(1, 720 / (s.host.clientWidth || innerWidth)));
+    let K = scale();
+    // Labels on the map itself only where there's room; the story below always names the place.
+    const roomy = () => K < 1.25;
     const LAND = [];
     window.RISO_MAP.forEach((row, j) => {
       for (let i = 0; i < row.length; i++) if (row[i] !== ".") LAND.push([i, j, row[i]]);
@@ -79,28 +80,20 @@
         dot(q, 5 * K, q.paid ? T.ink : q === hoverPin ? Riso.INK.b.strong : "#6b6866");
       }
       dot(sel, 6 * K, sel.paid ? T.ink : Riso.INK.b.strong, true);
-      // Phones have no room to keep the $26 label up when another pin is picked.
-      if (K === 1 && SYDNEY !== sel && SYDNEY !== hoverPin) pinLabel(SYDNEY, "strong");
-      if (hoverPin && hoverPin !== sel) pinLabel(hoverPin, "");
-      pinLabel(sel, "strong");
-      // the picked place, spelled out under the map: its name, then each thing that happened there
-      s.rect(0, PY, W, 1, "k", { color: T.grid, bg: true });
-      s.label(0, PY + 34 * Math.min(K, 1.4), sel.paid ? `${sel.n} · $26` : sel.n, { cls: "strong", size: 21 * Math.min(K, 1.4) });
-      let ly = PY + 34 * Math.min(K, 1.4) + LH + 4;
-      for (const t of sel.items.slice(0, 3)) {
-        const cut = t.indexOf(" · "), dated = /^(Oct|Nov) \d/.test(t) && cut > 0;
-        if (dated) s.label(0, ly, t.slice(0, cut).toLowerCase(), { cls: "mono", size: 15 * Math.min(K, 1.4) });
-        s.label(92 * Math.min(K, 1.4), ly, dated ? t.slice(cut + 3) : t, { size: 17 * Math.min(K, 1.4) });
-        ly += LH;
+      if (roomy()) {
+        if (SYDNEY !== sel && SYDNEY !== hoverPin) pinLabel(SYDNEY, "strong");
+        if (hoverPin && hoverPin !== sel) pinLabel(hoverPin, "");
+        pinLabel(sel, "strong");
       }
     });
-    // A header, then one line per item with its date where it has one.
+    // Under the map, in page text so it wraps at any width: a header, then one line per item with its date where it has one.
     const lines = (items) => `<ul class="map-list">${items.map((t) => {
       const cut = t.indexOf(" · ");
       const dated = /^(Oct|Nov) \d/.test(t) && cut > 0;
       return `<li><span>${dated ? t.slice(0, cut) : ""}</span><div>${dated ? t.slice(cut + 3) : t}</div></li>`;
     }).join("")}</ul>`;
-    const describe = () => ui.read(`<b>${sel.n}</b>${lines(sel.items)}`);
+    const describe = () => { ui.extra.innerHTML = `<div class="map-story"><b>${sel.paid ? `${sel.n} · $26` : sel.n}</b>${lines(sel.items)}</div>`; };
+    addEventListener("resize", () => { const k = scale(); if (k !== K) { K = k; s.redraw(true); } });
 
     // The nearest pin under the pointer, so pins that sit close together stay reachable.
     const viewAt = (ev) => { const p = s.point(ev); return [p.x, p.y]; };

@@ -460,18 +460,20 @@ window.Riso = (() => {
     }
     // A profile picture, clipped to a circle, inside a ring in the actor's colour.
     avatar(href, cx, cy, r, ring, o = {}) {
-      const id = `rf-av-${++avatarSeq}`;
+      const id = `rf-av-${++avatarSeq}`, rx = r * 0.44;
       const clip = make("clipPath", { id });
-      clip.append(make("circle", { cx, cy, r }));
+      clip.append(make("rect", { x: cx - r, y: cy - r, width: 2 * r, height: 2 * r, rx }));
       this.shapes.append(clip);
-      this.shapes.append(make("circle", { cx, cy, r: r + (o.ring ?? 3.5), fill: ring }));
-      this.shapes.append(make("circle", { cx, cy, r: r + 1, fill: T.bg }));
       this.shapes.append(make("image", { href, x: cx - r, y: cy - r, width: 2 * r, height: 2 * r, "clip-path": `url(#${id})`, preserveAspectRatio: "xMidYMid slice" }));
     }
-    // Initials in a light ring, the way cofounder.co draws people without a photo.
+    // A brand mark from data/icons-data.js, at a size, with its top left corner at x, y.
+    icon(name, x, y, size, color) {
+      const m = window.PETER_ICONS[name];
+      this.shapes.append(make("path", { d: m.d, fill: color, "fill-rule": m.eo ? "evenodd" : null, transform: `translate(${x} ${y}) scale(${size / 24})` }));
+    }
+    // Initials on a tile, the same shape as a photo, for people without one.
     initials(cx, cy, r, text) {
-      this.shapes.append(make("circle", { cx, cy: cy + 1.2, r: r + 0.6, fill: "#2b2622", "fill-opacity": 0.06 }));
-      this.shapes.append(make("circle", { cx, cy, r, fill: T.card, stroke: "#d3d3cd", "stroke-width": 1 }));
+      this.shapes.append(make("rect", { x: cx - r, y: cy - r, width: 2 * r, height: 2 * r, rx: r * 0.44, fill: T.cell }));
       this.label(cx, cy + 4.5, text, { anchor: "middle", cls: "strong bare" });
     }
     // A legend row: a dot and a label per entry. Returns where it ended.

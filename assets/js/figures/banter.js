@@ -44,7 +44,7 @@
         s.rect(w + 12, y - 4.5, 600 - w - 12, 1, "k", { color: T.grid, bg: true });
         y += 22;
         for (const [who, when, lines, x = {}] of rows) {
-          s.avatar(PFP[who], AX, y + R, R, RING[who], { ring: 2.5 });
+          s.avatar(PFP[who], AX, y + R, R);
           const nw = s.measure(NAME[who], { cls: "strong" });
           s.label(TX, y + 11, NAME[who], { cls: "strong" });
           s.label(TX + nw + 8, y + 11, when, { cls: "mono" });

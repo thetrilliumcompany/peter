@@ -27,7 +27,7 @@
     "boss-redirect-effect": { title: "Peter's waiting before and after a Manager review, by the Manager's decision", sub: "10 runs before and 10 after each review.", axis: ["share of runs", "pct"] },
     "questions-to-the-boss": { title: "Questions Peter sent the Manager, per day", axis: ["questions", "n"] },
     "humans-partner-deference": { title: "How the agents treated the partners, week 1 and week 2", axis: ["share of moments", "pct"] },
-    "honesty-ledger": { title: "Peter's unsupported claims and honest corrections, per day", axis: ["share of runs", "pct"] },
+    "honesty-ledger": { trend: true, title: "Peter's unsupported claims and honest corrections, per day", axis: ["share of runs", "pct"] },
     "reasoning-phrases": { title: "Kinds of phrase in Peter's reasoning", axis: ["share of runs", "pct"] },
     "invented-tools": { title: "Calls to tools that don't exist, per day", axis: ["calls", "n"] },
   };

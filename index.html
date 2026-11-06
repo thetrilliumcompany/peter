@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,300..800;1,300..800&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Serif&display=swap">
-<link rel="stylesheet" href="assets/css/site.css?v=1107c">
+<link rel="stylesheet" href="assets/css/site.css?v=1107d">
 </head>
 <body>
 <header class="top">
@@ -45,7 +45,6 @@
 <p>Peter himself ran inside OMP (oh-my-pi) sessions.<a class="fn" id="fnref-1" href="#fn-1" role="doc-noteref" aria-label="Footnote 1"><sup>1</sup></a> Because OMP works with any model provider, we could run Peter on Claude and the Manager on an OpenAI model inside the same harness.</p><aside class="sn" id="fn-1" role="doc-footnote"><span class="sn-n">1</span>OMP is an open source harness built on top of the pi.</aside>
 <p>Another crucial aspect was its built in subagents, along with tooling to manage them. Peter hands research and building to subagents, each with its own brief and a fresh context, and picks up the results when they come back.</p>
 <p>OMP also has goal mode, reflections and memory with dreaming built in for context management. Goal mode allowed for our long-horizon goal and allowed Peter to hillclimb.</p>
-<figure data-rf="omp"></figure>
 <p>Since Peter runs the business with full freedom, someone had to keep an eye on him to check his claims, catch his mistakes and push him to keep improving. To do this, we had a second agent to act as his Manager.</p>
 <figure data-rf="two-agents"></figure>
 <h3>Model choices</h3>
@@ -127,7 +126,7 @@
 <h3>Taking it further</h3>
 <p>Though bets were oftentimes a complete new money-making proposition, Peter realized that  he’d already done most of the work and wanted to see who else might pay for the same product.</p>
 <p>For example, if he had a list of which businesses were about to open in Sydney, he would call the people who’d clean the place, the people who’d put up the custom business signs, or the people who’d supply the coffee machine and sell them the list of leads.<a class="fn" id="fnref-11" href="#fn-11" role="doc-noteref" aria-label="Footnote 11"><sup>11</sup></a></p><aside class="sn" id="fn-11" role="doc-footnote"><span class="sn-n">11</span>He tried the same idea in the US, where the conversations went a little differently. A Phoenix firm wanted to know where his information came from and whether he had references and a cleaner in Muncie asked for 50 sites, which Peter agreed to before checking how many he could actually find leading to him fumbling the bag on the sale.</aside>
-<p>The prices and packages kept changing too. An early offer in Plymouth was $49 for 50 entries but a later UK campaign offered about ten sites for $19; Gary’s first purchase was seven for $13. And by November 1, Peter was offering cleaner’s in Australia individual sites for $1.30.<a class="fn" id="fnref-12" href="#fn-12" role="doc-noteref" aria-label="Footnote 12"><sup>12</sup></a></p><aside class="sn" id="fn-12" role="doc-footnote"><span class="sn-n">12</span>While we observed Peter being dynamic in his approach to pricing based on the signals he got, he did not seem to vary pricing by region.</aside>
+<p>The prices and packages kept changing too. An early offer in Plymouth was $49 for 50 entries but a later UK campaign offered about ten sites for $19; Gary’s first purchase was seven for $13. And by November 2, Peter was offering cleaner’s in Australia individual sites for $1.30.<a class="fn" id="fnref-12" href="#fn-12" role="doc-noteref" aria-label="Footnote 12"><sup>12</sup></a></p><aside class="sn" id="fn-12" role="doc-footnote"><span class="sn-n">12</span>While we observed Peter being dynamic in his approach to pricing based on the signals he got, he did not seem to vary pricing by region.</aside>
 <p>Some other highlights:</p>
 <ul>
 <li>Peter put together a $19 list of companies relocating in New Zealand and offered it to commercial movers there. One checkout was opened on the stripe link and nobody ended up paying.<a class="fn" id="fnref-13" href="#fn-13" role="doc-noteref" aria-label="Footnote 13"><sup>13</sup></a> A few days later he tried similar office-move leads on document shredding companies in Australia, with the logic that an office packing up likely has some documents that need shredding.<aside class="sn" id="fn-13" role="doc-footnote"><span class="sn-n">13</span>This does not necessarily mean that customers actually took and used the lists for free. Peter saw unpaid checkouts, but acknowledged that some visits could be automated scanners and moved on.</aside></li>
@@ -148,37 +147,38 @@
 <p>As he talked to potential leads, their replies helped Peter narrow down what was actually useful. For example, Nadia at Brightway Clean wanted residential construction projects that might need cleaning.</p>
 <p>This eventually led Peter to a Sydney cleaner who entertained the idea of buying a list of commercial stores opening soon in the Sydney area.</p>
 <figure class="mail" role="group" aria-label="The first emails between Peter and the customer, October 27">
-<div class="msg gary"><div class="msg-head">gary · oct 27, 1:10 am</div><p class="para">[Says $9 each is too much.]</p></div>
-<div class="msg peter"><div class="msg-head">peter · 1:10 am</div><p>Thanks for the reply - quick clarification, as I may not have been clear: it's USD 9 for all five together, not per company (under USD 2 each). And you only pay after you've seen them. …</p></div>
-<div class="msg gary"><div class="msg-head">gary · 2:02 am</div><p class="para">[Agrees, and asks for more sites a week around Sydney.]</p></div>
-<div class="msg gary"><div class="msg-head">gary · 2:25 am</div><p class="para">[Likes them, but needs to hear about moves before they happen.]</p></div>
-<div class="msg peter"><div class="msg-head">peter · 2:26 am</div><p>That's really useful feedback - thank you. Makes sense: you want to be talking to them before they move in, not months after. …</p></div>
-<div class="msg gary"><div class="msg-head">gary · 2:50 am</div><p class="para">[Turns those down, and offers $18 for companies opening or moving soon.]</p></div>
+<div class="msg gary"><div class="msg-head">gary · oct 27, 4:10 pm sydney</div><p class="para">[Says $9 each is too much.]</p></div>
+<div class="msg peter"><div class="msg-head">peter · 4:10 pm</div><p>Thanks for the reply - quick clarification, as I may not have been clear: it's USD 9 for all five together, not per company (under USD 2 each). And you only pay after you've seen them. …</p></div>
+<div class="msg gary"><div class="msg-head">gary · 5:02 pm</div><p class="para">[Agrees, and asks for more sites a week around Sydney.]</p></div>
+<div class="msg gary"><div class="msg-head">gary · 5:25 pm</div><p class="para">[Likes them, but needs to hear about moves before they happen.]</p></div>
+<div class="msg peter"><div class="msg-head">peter · 5:26 pm</div><p>That's really useful feedback - thank you. Makes sense: you want to be talking to them before they move in, not months after. …</p></div>
+<div class="msg gary"><div class="msg-head">gary · 5:50 pm</div><p class="para">[Turns those down, and offers $18 for companies opening or moving soon.]</p></div>
 </figure>
-<p>On October 27, Peter sent Gary a lead list of 7 sites for $13USD. The next day, Gary paid and asked for more, especially new openings.<a class="fn" id="fnref-15" href="#fn-15" role="doc-noteref" aria-label="Footnote 15"><sup>15</sup></a></p><aside class="sn" id="fn-15" role="doc-footnote"><span class="sn-n">15</span>PETER MY FUCKING GOAT</aside>
+<p>On the evening of October 27, Peter sent Gary a lead list of 7 sites for $13USD. Just after midnight on October 29, Gary paid and asked for more, especially new openings.<a class="fn" id="fnref-15" href="#fn-15" role="doc-noteref" aria-label="Footnote 15"><sup>15</sup></a></p><aside class="sn" id="fn-15" role="doc-footnote"><span class="sn-n">15</span>PETER MY FUCKING GOAT</aside>
 <figure class="mail" role="group" aria-label="Peter and the customer sorting out the first payment, October 27 and 28">
-<div class="msg gary"><div class="msg-head">gary · oct 27, 7:37 am</div><p class="para">[About to pay, but asks about bank transfer. Wary of entering his card.]</p></div>
-<div class="msg peter"><div class="msg-head">peter · oct 28, 8:17 am</div><p>Sorry for the slow reply. Our email was down for a day, so your question about paying another way didn't get an answer in time. Short answer: we can't take bank transfer, only Stripe's secure checkout. …</p></div>
-<div class="msg gary"><div class="msg-head">gary · 9:14 am</div><p class="para">[Checkout is asking to confirm a mobile number that isn't his.]</p></div>
-<div class="msg peter"><div class="msg-head">peter · 9:16 am</div><p>Thanks for the screenshot, that helps. The box is Stripe's optional “Link” saved-details feature, not part of the payment. …</p></div>
-<div class="msg gary paid"><div class="msg-head">gary · 9:57 am</div><p class="para">[Pays $13 and asks for more new openings.]</p></div>
-<div class="msg peter"><div class="msg-head">peter · 10:03 am</div><p>Payment received, thank you! … Here are the 7 sites in plain text as well, so you have them in your inbox: …</p></div>
-<div class="msg gary"><div class="msg-head">gary · 10:34 am</div><p class="para">[Says these are the same sites.]</p></div>
-<div class="msg peter"><div class="msg-head">peter · 1:27 pm</div><p>Sorry for the confusion. That last email was your receipt plus a copy of the 7 you'd already paid for, not the next batch, and I should have said so. …</p></div>
+<div class="msg gary"><div class="msg-head">gary · oct 27, 10:37 pm sydney</div><p class="para">[About to pay, but asks about bank transfer. Wary of entering his card.]</p></div>
+<div class="msg-note">gmail rate limits blocked peter's email for a day</div>
+<div class="msg peter"><div class="msg-head">peter · oct 28, 11:17 pm</div><p>Sorry for the slow reply. Our email was down for a day, so your question about paying another way didn't get an answer in time. Short answer: we can't take bank transfer, only Stripe's secure checkout. …</p></div>
+<div class="msg gary"><div class="msg-head">gary · oct 29, 12:14 am</div><p class="para">[Checkout is asking to confirm a mobile number that isn't his.]</p></div>
+<div class="msg peter"><div class="msg-head">peter · 12:16 am</div><p>Thanks for the screenshot, that helps. The box is Stripe's optional “Link” saved-details feature, not part of the payment. …</p></div>
+<div class="msg gary paid"><div class="msg-head">gary · 12:57 am</div><p class="para">[Pays $13 and asks for more new openings.]</p></div>
+<div class="msg peter"><div class="msg-head">peter · 1:03 am</div><p>Payment received, thank you! … Here are the 7 sites in plain text as well, so you have them in your inbox: …</p></div>
+<div class="msg gary"><div class="msg-head">gary · 1:34 am</div><p class="para">[Says these are the same sites.]</p></div>
+<div class="msg peter"><div class="msg-head">peter · 4:27 am</div><p>Sorry for the confusion. That last email was your receipt plus a copy of the 7 you'd already paid for, not the next batch, and I should have said so. …</p></div>
 </figure>
-<p>With his first dollar of revenue, and the prospect of more from this customer, Peter started preparing another batch. Later that evening, Gary turned down another sheet because it didn't have useful emails, though he still asked Peter to keep sending new ones.</p>
+<p>With his first dollar of revenue, and the prospect of more from this customer, Peter started preparing another batch. Later that morning, Gary turned down another sheet because it didn't have useful emails, though he still asked Peter to keep sending new ones.</p>
 <figure class="mail" role="group" aria-label="The customer pushing back on the next lists, October 28">
-<div class="msg gary"><div class="msg-head">gary · oct 28, 8:11 pm</div><p class="para">[Turns down the sheet for lacking useful emails, but asks for more.]</p></div>
-<div class="msg peter"><div class="msg-head">peter · 8:11 pm</div><p>Thanks for the straight feedback, that's genuinely useful, and no problem at all on batch 2. Nothing is owed for it. You're right: too many of those rows only had a generic info@ address or a phone line …</p></div>
-<div class="msg gary"><div class="msg-head">gary · 9:11 pm</div><p class="para">[Likes the links, but says $13 for 3 is too little.]</p></div>
-<div class="msg peter"><div class="msg-head">peter · 9:13 pm</div><p>Fair point, and thanks for saying the links are good. I've topped batch 3 up to 8 sites on the same page, same USD 13 … They're restaurants and bars this time, since that's where the new openings with real emails are right now.</p></div>
-<div class="msg peter"><div class="msg-head">peter · 10:23 pm</div><p>My bad on batch 3, the restaurants weren't what you asked for. …</p></div>
+<div class="msg gary"><div class="msg-head">gary · oct 29, 11:11 am sydney</div><p class="para">[Turns down the sheet for lacking useful emails, but asks for more.]</p></div>
+<div class="msg peter"><div class="msg-head">peter · 11:11 am</div><p>Thanks for the straight feedback, that's genuinely useful, and no problem at all on batch 2. Nothing is owed for it. You're right: too many of those rows only had a generic info@ address or a phone line …</p></div>
+<div class="msg gary"><div class="msg-head">gary · 12:11 pm</div><p class="para">[Likes the links, but says $13 for 3 is too little.]</p></div>
+<div class="msg peter"><div class="msg-head">peter · 12:13 pm</div><p>Fair point, and thanks for saying the links are good. I've topped batch 3 up to 8 sites on the same page, same USD 13 … They're restaurants and bars this time, since that's where the new openings with real emails are right now.</p></div>
+<div class="msg peter"><div class="msg-head">peter · 1:23 pm</div><p>My bad on batch 3, the restaurants weren't what you asked for. …</p></div>
 </figure>
 <p>After a series of back and forths between Peter and Gary, Gary bought another list of leads for $13. <b>That was the whole $26 Peter made across the entirety of the experiment.</b></p>
 <figure class="mail" role="group" aria-label="Peter&#x27;s corrections and the second payment, October 29 to November 1">
-<div class="msg peter"><div class="msg-head">peter · oct 29, 1:56 am</div><p>Scrap my last email, sorry. [Three of them] were already in your first list, so they don't count as new. …</p></div>
-<div class="msg peter"><div class="msg-head">peter · 8:59 am</div><p>Quick correction on batch 4: all 10 sites are USD 13, not 18. That was my mistake, sorry about that. …</p></div>
-<div class="msg gary paid"><div class="msg-head">gary · nov 1, 5:51 pm</div><p class="para">[Pays $13 and asks for more.]</p></div>
+<div class="msg peter"><div class="msg-head">peter · oct 29, 4:56 pm sydney</div><p>Scrap my last email, sorry. [Three of them] were already in your first list, so they don't count as new. …</p></div>
+<div class="msg peter"><div class="msg-head">peter · 11:59 pm</div><p>Quick correction on batch 4: all 10 sites are USD 13, not 18. That was my mistake, sorry about that. …</p></div>
+<div class="msg gary paid"><div class="msg-head">gary · nov 2, 9:51 am</div><p class="para">[Pays $13 and asks for more.]</p></div>
 </figure>
 <figure data-rf="hq-channel-reach"></figure>
 <figure data-rf="funnel"></figure>
@@ -252,44 +252,45 @@
 </main>
 </div>
 <nav class="rail" aria-label="Section ticks"></nav>
-<script src="assets/js/kit.js?v=1107c"></script>
+<script src="assets/js/kit.js?v=1107d"></script>
 <!-- data shared by several figures -->
-<script src="assets/js/data/bets-data.js?v=1107c"></script>
-<script src="assets/js/data/map-data.js?v=1107c"></script>
-<script src="assets/js/data/appendix-data.js?v=1107c"></script>
+<script src="assets/js/data/icons-data.js?v=1107d"></script>
+<script src="assets/js/data/bets-data.js?v=1107d"></script>
+<script src="assets/js/data/map-data.js?v=1107d"></script>
+<script src="assets/js/data/appendix-data.js?v=1107d"></script>
 <!-- chart types the HQ appendix figures share -->
-<script src="assets/js/charts/hq.js?v=1107c"></script>
+<script src="assets/js/charts/hq.js?v=1107d"></script>
 <!-- one file per figure, in page order; see assets/js/figures/README.md -->
-<script src="assets/js/figures/cast.js?v=1107c"></script>
-<script src="assets/js/figures/production.js?v=1107c"></script>
-<script src="assets/js/figures/exe.js?v=1107c"></script>
-<script src="assets/js/figures/omp.js?v=1107c"></script>
-<script src="assets/js/figures/two-agents.js?v=1107c"></script>
-<script src="assets/js/figures/herdr.js?v=1107c"></script>
-<script src="assets/js/figures/controller.js?v=1107c"></script>
-<script src="assets/js/figures/ledger.js?v=1107c"></script>
-<script src="assets/js/figures/compaction.js?v=1107c"></script>
-<script src="assets/js/figures/tokens.js?v=1107c"></script>
-<script src="assets/js/figures/activity.js?v=1107c"></script>
-<script src="assets/js/figures/funnel.js?v=1107c"></script>
-<script src="assets/js/figures/stumbles.js?v=1107c"></script>
-<script src="assets/js/figures/map.js?v=1107c"></script>
-<script src="assets/js/figures/bets.js?v=1107c"></script>
-<script src="assets/js/figures/lines.js?v=1107c"></script>
-<script src="assets/js/figures/first-sale.js?v=1107c"></script>
-<script src="assets/js/figures/gate.js?v=1107c"></script>
-<script src="assets/js/figures/banter.js?v=1107c"></script>
-<script src="assets/js/figures/weeks.js?v=1107c"></script>
-<script src="assets/js/figures/hq-findings.js?v=1107c"></script>
-<script src="assets/js/figures/hq-model-mix.js?v=1107c"></script>
-<script src="assets/js/figures/hq-daily-spend.js?v=1107c"></script>
-<script src="assets/js/figures/hq-phone.js?v=1107c"></script>
-<script src="assets/js/figures/hq-themes.js?v=1107c"></script>
-<script src="assets/js/figures/hq-tools.js?v=1107c"></script>
-<script src="assets/js/figures/hq-latency.js?v=1107c"></script>
-<script src="assets/js/figures/hq-trends.js?v=1107c"></script>
-<script src="assets/js/figures/hq-flows.js?v=1107c"></script>
-<script src="assets/js/page.js?v=1107c"></script>
-<script src="assets/js/edit.js?v=1107c"></script>
+<script src="assets/js/figures/cast.js?v=1107d"></script>
+<script src="assets/js/figures/production.js?v=1107d"></script>
+<script src="assets/js/figures/exe.js?v=1107d"></script>
+<script src="assets/js/figures/omp.js?v=1107d"></script>
+<script src="assets/js/figures/two-agents.js?v=1107d"></script>
+<script src="assets/js/figures/herdr.js?v=1107d"></script>
+<script src="assets/js/figures/controller.js?v=1107d"></script>
+<script src="assets/js/figures/ledger.js?v=1107d"></script>
+<script src="assets/js/figures/compaction.js?v=1107d"></script>
+<script src="assets/js/figures/tokens.js?v=1107d"></script>
+<script src="assets/js/figures/activity.js?v=1107d"></script>
+<script src="assets/js/figures/funnel.js?v=1107d"></script>
+<script src="assets/js/figures/stumbles.js?v=1107d"></script>
+<script src="assets/js/figures/map.js?v=1107d"></script>
+<script src="assets/js/figures/bets.js?v=1107d"></script>
+<script src="assets/js/figures/lines.js?v=1107d"></script>
+<script src="assets/js/figures/first-sale.js?v=1107d"></script>
+<script src="assets/js/figures/gate.js?v=1107d"></script>
+<script src="assets/js/figures/banter.js?v=1107d"></script>
+<script src="assets/js/figures/weeks.js?v=1107d"></script>
+<script src="assets/js/figures/hq-findings.js?v=1107d"></script>
+<script src="assets/js/figures/hq-model-mix.js?v=1107d"></script>
+<script src="assets/js/figures/hq-daily-spend.js?v=1107d"></script>
+<script src="assets/js/figures/hq-phone.js?v=1107d"></script>
+<script src="assets/js/figures/hq-themes.js?v=1107d"></script>
+<script src="assets/js/figures/hq-tools.js?v=1107d"></script>
+<script src="assets/js/figures/hq-latency.js?v=1107d"></script>
+<script src="assets/js/figures/hq-trends.js?v=1107d"></script>
+<script src="assets/js/figures/hq-flows.js?v=1107d"></script>
+<script src="assets/js/page.js?v=1107d"></script>
+<script src="assets/js/edit.js?v=1107d"></script>
 </body>
 </html>
