@@ -7,7 +7,7 @@
   fig("compaction", {
     fit: false,
     w: 600,
-    h: 262,
+    h: 286,
     morph: false,
     alt: "One of Peter's compactions, to scale. The context window holds a million tokens; about 850,000 of them collapse to about 75,000: a structured summary of the goal, constraints, progress, decisions and next steps, plus the last 20,000 tokens kept word for word. Below, compactions so far: 55 for Peter and 64 for the Manager.",
   }, (s, ui) => {
@@ -24,6 +24,15 @@
       const tl = `≈ ${fmt(Math.round(v / 1000) * 1000)} tokens`;
       if (W(v) > 300) s.label(W(v) - 14, Y + H / 2 + 6, tl, { anchor: "end", cls: "strong" });
       else s.label(W(v) + 14, Y + H / 2 + 6, tl, { cls: "strong" });
+      if (!done && v > 800_000) {
+        // before: what's filling the window, in the same places the summary's parts go after
+        s.guide(body / 2, Y + H, body / 2, 116);
+        s.label(0, 130, "the conversation so far", { cls: "strong" });
+        s.label(0, 148, "every message, tool call and result since the last compaction", { cls: "mono" });
+        s.guide(body + tail / 2, Y + H, body + tail / 2, 98);
+        s.guide(body + tail / 2, 98, body + tail / 2 - 40, 98);
+        s.label(body + tail / 2 - 48, 103, "the most recent turns", { anchor: "end", cls: "strong" });
+      }
       if (done) {
         // what the 75,000 are made of
         s.guide(body / 2, Y + H, body / 2, 116);
@@ -34,12 +43,12 @@
         s.label(248, 103, "the last ~20,000 tokens, word for word", { cls: "strong" });
       }
       // compactions so far, one tick each
-      for (const [name, n, ink, y] of [["peter", 55, "b", 214], ["manager", 64, "r", 242]]) {
+      for (const [name, n, ink, y] of [["peter", 55, "b", 240], ["manager", 64, "r", 268]]) {
         s.label(0, y + 5, name, { cls: "mono" });
         for (let i = 0; i < n; i++) s.rect(80 + i * 6.6, y - 9, 3.4, 18, ink, { color: Riso.INK[ink].strong });
         s.label(80 + n * 6.6 + 8, y + 5, `${n}`, { cls: "strong" });
       }
-      s.label(0, 190, "compactions so far", { cls: "mono" });
+      s.label(0, 216, "compactions so far", { cls: "mono" });
     });
     let anim = 0;
     const run = (to) => {
@@ -59,5 +68,9 @@
       if (v > 100000) { run(75_000); b.textContent = "undo"; }
       else { run(850_000); b.textContent = "compact"; }
     });
+    // the button lives inside the drawing, just above "compactions so far"
+    const ctl = b.closest(".rf-controls"), stage = s.svg.parentElement;
+    stage.append(ctl);
+    ctl.style.cssText = "position: absolute; left: 0; top: 58%; margin: 0;";
   });
 })();

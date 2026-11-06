@@ -38,7 +38,8 @@
   fig("map", {
     wide: true,
     minWidth: 0,
-    h: 345,
+    h: 470,
+    fit: false,
     alt: "A dotted world map with pins where Peter tried selling, across Canada, the United States, the UK, Ireland, Australia, New Zealand, Malaysia and Singapore. Choosing a pin shows what happened there. Only Sydney, Australia, paid.",
   }, (s, ui) => {
     const SYDNEY = PINS.find((q) => q.paid);
@@ -46,6 +47,8 @@
     const W = 960, H = 345, G = 6.8;
     // On a phone the whole map shrinks to fit, so labels and pins scale back up.
     const K = innerWidth < 620 ? 2.7 : 1;
+    // under the map, a fixed place for the picked pin's story
+    const PY = H + 18, LH = 25 * Math.min(K, 1.4);
     const LAND = [];
     window.RISO_MAP.forEach((row, j) => {
       for (let i = 0; i < row.length; i++) if (row[i] !== ".") LAND.push([i, j, row[i]]);
@@ -66,9 +69,9 @@
     const dot = (q, r, color, ring) => s.node(px(q.at[0]), py(q.at[1]), r, "k", { color, ring, knock: 2.5 * K });
     s.paint(() => {
       for (const [ch, pts] of Object.entries(cells)) {
-        if (!PLACES[ch]) { s.marks(pts, "k", { p: G, size: 0.17 * Math.min(K, 1.6) }); continue; }
+        if (!PLACES[ch]) { s.marks(pts, "k", { p: G, size: 0.17 * Math.min(K, 1.6), color: "#b9b9b3" }); continue; }
         const on = ch === sel.k;
-        s.marks(pts, "b", { p: G, size: (on ? 0.42 : 0.3) * Math.min(K, 1.3) });
+        s.marks(pts, "b", { p: G, size: (on ? 0.42 : 0.3) * Math.min(K, 1.3), color: on ? Riso.INK.b.strong : Riso.INK.b.mid });
       }
       // hovering a pin changes its colour, never its size
       for (const q of PINS) {
@@ -80,6 +83,16 @@
       if (K === 1 && SYDNEY !== sel && SYDNEY !== hoverPin) pinLabel(SYDNEY, "strong");
       if (hoverPin && hoverPin !== sel) pinLabel(hoverPin, "");
       pinLabel(sel, "strong");
+      // the picked place, spelled out under the map: its name, then each thing that happened there
+      s.rect(0, PY, W, 1, "k", { color: T.grid, bg: true });
+      s.label(0, PY + 34 * Math.min(K, 1.4), sel.paid ? `${sel.n} · $26` : sel.n, { cls: "strong", size: 21 * Math.min(K, 1.4) });
+      let ly = PY + 34 * Math.min(K, 1.4) + LH + 4;
+      for (const t of sel.items.slice(0, 3)) {
+        const cut = t.indexOf(" · "), dated = /^(Oct|Nov) \d/.test(t) && cut > 0;
+        if (dated) s.label(0, ly, t.slice(0, cut).toLowerCase(), { cls: "mono", size: 15 * Math.min(K, 1.4) });
+        s.label(92 * Math.min(K, 1.4), ly, dated ? t.slice(cut + 3) : t, { size: 17 * Math.min(K, 1.4) });
+        ly += LH;
+      }
     });
     // A header, then one line per item with its date where it has one.
     const lines = (items) => `<ul class="map-list">${items.map((t) => {
@@ -90,10 +103,7 @@
     const describe = () => ui.read(`<b>${sel.n}</b>${lines(sel.items)}`);
 
     // The nearest pin under the pointer, so pins that sit close together stay reachable.
-    const viewAt = (ev) => {
-      const b = s.svg.getBoundingClientRect();
-      return [(ev.clientX - b.left) / b.width * W, (ev.clientY - b.top) / b.height * H];
-    };
+    const viewAt = (ev) => { const p = s.point(ev); return [p.x, p.y]; };
     const pinAt = (x, y) => {
       let best = null, dist = 16 * K;
       for (const q of PINS) {

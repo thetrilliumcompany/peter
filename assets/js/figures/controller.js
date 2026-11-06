@@ -4,7 +4,7 @@
 (() => {
   const { fig, T } = Riso;
 
-  const ROWS = [["peter", "b", 58], ["manager", "r", 110], ["us", "k", 162], ["slack", "k", 214, true]];
+  const ROWS = [["peter", "b", 58], ["manager", "r", 110], ["us", "k", 162], ["slack", "p", 214, true]];
 
   fig("controller", {
     w: 600,
@@ -17,16 +17,16 @@
       s.legend([["peterctl", G]], SEAM - 40, 16, { mono: true });
       s.seam(SEAM, 34, SEAM, 236);
       ROWS.forEach(([name, ink, y, direct]) => {
-        const col = ink === "k" ? T.ink : Riso.INK[ink].strong;
+        const col = ink === "k" ? T.ink : Riso.INK[ink].strong, tint = ink === "k" ? "#9d9d98" : Riso.INK[ink].mid;
         s.label(0, y + 5, name, { cls: "strong" });
-        s.wire(`M${NX},${y}H${RAIL}`, ink, { color: col, flow: { ms: 1700, n: 1 } });
-        s.node(NX, y, 5.5, ink, { color: col });
+        s.wire(`M${NX},${y}H${RAIL - 2}`, ink, { color: tint, w: 2, arrow: 1, flow: { ms: 1700, n: 1 } });
+        s.node(NX, y, 5.5, ink, { color: col, knock: 3 });
         if (direct) s.label(SEAM + 12, y - 9, "no model", { cls: "mono" });
         else s.port(SEAM, y, "g", true, { color: G });
       });
       s.rect(RAIL, 34, 200, 202, "y", { card: true, color: Y.pale });
-      s.rect(RAIL, 34, 4, 202, "y", { color: Y.mid });
-      s.label(RAIL + 100, 132, "controller", { anchor: "middle", cls: "strong" });
+      s.rect(RAIL, 34, 4, 202, "y", { color: Y.strong });
+      s.label(RAIL + 100, 132, "controller", { anchor: "middle", cls: "strong c-y" });
       s.label(RAIL + 100, 151, "every 30 s", { anchor: "middle", cls: "mono" });
     });
   });

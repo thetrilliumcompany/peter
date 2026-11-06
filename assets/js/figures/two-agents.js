@@ -43,7 +43,7 @@
       s.label(MX, CY + 5, "145k", { anchor: "middle", cls: "strong" });
       s.label(PX, 222, "claude opus 5.5 · 1,370 subagents", { anchor: "middle", cls: "mono" });
       s.label(MX, 222, "gpt-6 astra, then 6.1 sol", { anchor: "middle", cls: "mono" });
-      s.label(MX, 240, "33 subagents, read-only", { anchor: "middle", cls: "mono" });
+      s.label(MX, 240, "33 subagents", { anchor: "middle", cls: "mono" });
       // how the reviews ended, largest first; the telling one in red
       s.label(0, RY - 22, `how the manager's ${fmt(total)} reviews ended`, { cls: "mono" });
       s.rect(RX - 0.5, RY - 4, 1, DECISIONS.length * RH, "k", { color: T.grid, bg: true });

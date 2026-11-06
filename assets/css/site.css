@@ -116,10 +116,14 @@ h1 { margin: 22px 0 22px; font: 400 42px/1.12 var(--face); color: var(--head); l
 .lede { font-size: 17px; color: var(--body); margin: 0 0 30px; max-width: 34em; }
 h2 { font: 560 25px/1.32 var(--face); color: var(--head); letter-spacing: 0.002em; margin: 76px 0 16px; }
 h3 { font: 580 17px/1.4 var(--face); color: var(--head); margin: 42px 0 10px; }
+/* a section that opens straight onto its first subsection sits close under the chapter heading */
+h2 + h3 { margin-top: 14px; }
 p { margin: 0 0 18px; }
 b { font-weight: 640; color: var(--head); }
 i { font-style: italic; }
 a { text-decoration-color: rgba(38, 35, 35, 0.3); text-decoration-thickness: 1px; text-underline-offset: 2.5px; }
+.col a:not(.fn), .sn a { color: #026dbb; text-decoration-color: rgba(3, 135, 231, 0.35); }
+.col a:not(.fn):hover, .sn a:hover { text-decoration-color: currentColor; }
 a:hover { text-decoration-color: currentColor; }
 code { font: 400 0.88em var(--mono); color: var(--head); background: #ecece8; border-radius: 4px; padding: 1px 4px; }
 .col ul, .col ol { margin: 0 0 22px; padding: 0; list-style: none; }
@@ -144,9 +148,12 @@ code { font: 400 0.88em var(--mono); color: var(--head); background: #ecece8; bo
 /* tables in the text sit on the page like the figures: hairline rows, a mono header, no card */
 table { width: 100%; border-collapse: collapse; font-size: 14.5px; line-height: 1.45; margin: 30px 0 34px; }
 td { padding: 10px 16px 10px 0; border-top: 1px solid var(--line2); vertical-align: top; }
-.col > table tr:first-child td { border-top: 0; padding: 0 16px 8px 0; font: 400 12px/1.4 var(--mono); color: var(--quiet); }
+.col > table td { border-top: 0; padding: 10px 14px; }
+.col > table tr:nth-child(odd):not(:first-child) td { background: #f4f4f1; }
+.col > table tr:nth-child(2) td:first-child, .col > table tr:last-child td:first-child { border-radius: 0; }
+.col > table tr:first-child td { border-top: 0; padding: 0 14px 8px; font: 400 12px/1.4 var(--mono); color: var(--quiet); }
 .col > table tr:first-child td b { font-weight: 400; color: inherit; }
-.col > table tr:nth-child(2) td { border-top-color: #c9c9c3; }
+
 .todo { background: #fff6de; border-radius: 3px; padding: 0 3px; }
 .slot {
   margin: 30px 0; padding: 9px; border: 1px solid var(--line); border-radius: 12px; background: rgba(251, 251, 248, 0.5);
@@ -158,6 +165,8 @@ td { padding: 10px 16px 10px 0; border-top: 1px solid var(--line2); vertical-ali
 figure.art { margin: 36px 0 40px; }
 .art img { display: block; width: 100%; height: auto; border-radius: 10px; }
 /* a drawn meme sits on the paper at a reading size, not the full column */
+/* a screenshot that reads fine a little smaller than the column */
+.art.small img { width: min(100%, 560px); margin: 0 auto; }
 .art.meme img { width: min(100%, 460px); margin: 0 auto; border-radius: 0; filter: brightness(1.07); }
 
 /* a phrase with a picture behind it: dotted underline, the picture only on hover */
@@ -184,7 +193,6 @@ figure.art { margin: 36px 0 40px; }
 .fn:hover, .fn.lit { color: var(--ink); }
 .sn { font-size: 13.5px; line-height: 1.45; color: var(--body); transition: color 0.15s; }
 .sn-n { font: 400 10.5px/0 var(--face); vertical-align: 0.5em; color: var(--quiet); margin-right: 3px; }
-.sn a { color: inherit; }
 .sn.lit { color: var(--ink); }
 @media (min-width: 1240px) {
   .sn { position: absolute; left: calc(100% + 44px); width: min(260px, calc(50vw - 360px - 20px - 44px - 36px)); }
@@ -256,7 +264,8 @@ figure.rf-wide { width: 100%; }
   box-shadow: inset -3px -3px #262626, inset 3px 3px #5c5c5a, 0 -3px 0 0 #1f1f1f, 0 3px 0 0 #1f1f1f, -3px 0 0 0 #1f1f1f, 3px 0 0 0 #1f1f1f;
 }
 .rf-btn:focus-visible { outline: 2px solid var(--blue); outline-offset: 1px; }
-.rf-btn.rf-act { font-size: 13px; padding: 10px 20px; color: #fff; background: #383838; box-shadow: inset -4px -4px #262626, inset 4px 4px #5c5c5a, 0 -4px 0 0 #1f1f1f, 0 4px 0 0 #1f1f1f, -4px 0 0 0 #1f1f1f, 4px 0 0 0 #1f1f1f, 4px 8px 0 0 #dcdcd6, 8px 4px 0 0 #dcdcd6; }
+/* the action button is the same size as the choice buttons beside it, just dark */
+.rf-btn.rf-act { font-size: 13px; padding: 7px 13px; color: #fff; background: #383838; box-shadow: inset -3px -3px #262626, inset 3px 3px #5c5c5a, 0 -3px 0 0 #1f1f1f, 0 3px 0 0 #1f1f1f, -3px 0 0 0 #1f1f1f, 3px 0 0 0 #1f1f1f, 3px 6px 0 0 #dcdcd6, 6px 3px 0 0 #dcdcd6; }
 .rf-btn.rf-act:hover { background: #4b4b4a; color: #fff; }
 .rf-btn.rf-act[disabled] { opacity: 0.45; cursor: default; }
 .rf-play { position: relative; overflow: hidden; display: inline-flex; align-items: center; gap: 6px; color: var(--ink); }
@@ -324,3 +333,21 @@ figure.rf figcaption { margin-top: 12px; font-size: 13px; line-height: 1.48; col
 }
 
 @media print { .rf-stage svg { visibility: visible !important; } .rf-flow, .rf-play { display: none; } }
+
+/* ---------- edit mode (only on the local edit server, see tools/edit-server.py) ---------- */
+.edit-btn {
+  font: 400 13px/1 var(--mono); color: var(--body); background: none; cursor: pointer;
+  border: 1px solid var(--line2); border-radius: 6px; padding: 8px 12px; margin-right: 4px;
+}
+.edit-btn:hover { color: var(--ink); border-color: #c9c9c3; }
+body.editing .edit-btn { color: #fff; background: var(--blue); border-color: var(--blue); }
+.edit-bar {
+  position: sticky; top: var(--top); z-index: 29; display: flex; justify-content: space-between; gap: 16px;
+  padding: 7px 20px; font: 400 12px/1.4 var(--mono); color: #026dbb; background: #eef6fd; border-bottom: 1px solid #c0e1f9;
+}
+.edit-bar[hidden] { display: none; }
+.edit-state { color: var(--quiet); white-space: nowrap; }
+.edit-state.bad { color: #c73322; }
+body.editing [data-edit-i] { outline: none; border-radius: 3px; transition: background-color 0.15s; cursor: text; }
+body.editing [data-edit-i]:hover { background: #f5f9fd; }
+body.editing [data-edit-i]:focus { background: #eef6fd; box-shadow: 0 0 0 4px #eef6fd; }

@@ -34,7 +34,6 @@
         s.label(LX + 16, y + 22, n);
         s.label(LX + LW - 12, y + 22, c, { anchor: "end", cls: "mono" });
       });
-      s.label(LX, LY + ROWS.length * RH + 14, "counts on nov 3", { cls: "mono" });
       // the readers, all on the same rows
       s.rect(LX + LW + 7, LY, 2, ROWS.length * RH - 8, "k", { color: T.rest });
       READERS.forEach(([name, ink], i) => {

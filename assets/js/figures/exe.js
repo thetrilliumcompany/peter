@@ -37,7 +37,7 @@
         s.wire(`M${SEAM},${y}H${TX}`, "g", { color: C.proxy, flow: { ms: 1600, n: 2 } });
         s.node(BUS, y, 5, "b");
         s.port(SEAM, y, "g", true, { color: C.proxy });
-        s.rect(TX, y - 22, 160, 44, "g", { card: true, color: Riso.INK.g.pale });
+        s.rect(TX, y - 22, 160, 44, "k", { card: true, color: "#efefeb" });
         s.label(TX + 16, y + 5, name, { cls: "strong" });
       });
     });

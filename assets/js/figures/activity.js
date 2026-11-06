@@ -23,15 +23,17 @@
     s.paint(() => {
       let y = 6;
       for (const [name, n] of ROWS) {
-        const dots = Math.round(n / 10);
-        s.label(NX, y + 4, fmt(n), { anchor: "end", cls: "strong" });
-        s.label(LX, y + 4, name, { cls: "dim" });
+        const dots = Math.round(n / 10), rows = Math.ceil(dots / PR);
+        // the label sits on the middle of its block of dots, not on the first row
+        const mid = y + (rows - 1) * G / 2;
+        s.label(NX, mid + 4.5, fmt(n), { anchor: "end", cls: "strong" });
+        s.label(LX, mid + 4.5, name, { cls: "dim" });
         s.marks(units(dots, X, y, PR, G), "b", { dot: DOT });
-        y += Math.ceil(dots / PR) * G + 12;
+        y += rows * G + 14;
       }
       // the one payment, in the same dot language
-      s.label(NX, y + 4, "1", { anchor: "end", cls: "strong" });
-      s.label(LX, y + 4, "paid", { cls: "dim" });
+      s.label(NX, y + 4.5, "1", { anchor: "end", cls: "strong" });
+      s.label(LX, y + 4.5, "paid", { cls: "dim" });
       s.marks([X, y], "k", { dot: DOT + 1.2, color: "#262323" });
       s.label(X + 10, y + 4, "one customer ($26)", { cls: "dim" });
       // what one dot is worth, in the empty corner

@@ -21,8 +21,8 @@
     const live = (b) => b.end === null || b.end > CUT;
     const byStart = (a, b) => a.start - b.start;
     const groups = [
-      { name: "killed by nov 2", color: KILLED, bets: BETS.filter((b) => !live(b)).sort(byStart) },
-      { name: "still live on nov 2", color: LIVE, bets: BETS.filter(live).sort(byStart) },
+      { name: "abandoned", color: KILLED, bets: BETS.filter((b) => !live(b)).sort(byStart) },
+      { name: "still live", color: LIVE, bets: BETS.filter(live).sort(byStart) },
     ];
     const liveAt = (d) => BETS.filter((b) => b.start <= d && (b.end === null || b.end > d)).length;
     const days = [["oct 19", 0], ["21", 2], ["23", 4], ["25", 6], ["27", 8], ["29", 10], ["31", 12], ["nov 2", 14]];

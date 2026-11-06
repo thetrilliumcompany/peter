@@ -19,7 +19,7 @@
     const TW = 141, TY = 38, TH = 112, SEAM = 186, VY = 226;
     let attached = true, peter = "working", tick = 0, last = 0;
     s.paint(() => {
-      s.legend([["herdr server · systemd, lingering", Riso.INK.y.mid]], 0, 16, { mono: true });
+      s.legend([["herdr server", Riso.INK.y.mid]], 0, 16, { mono: true });
       panes.forEach((p, i) => {
         const x = i * (TW + 12), st = p.n === "peter" ? peter : p.st;
         const col = p.ink === "k" ? T.refDot : Riso.INK[p.ink].strong;

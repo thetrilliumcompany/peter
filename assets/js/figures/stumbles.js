@@ -34,7 +34,7 @@
     const X0 = 196, X1 = 596, RH = 28;
     const dx = (d) => X0 + d / D * (X1 - X0);
     const AXY = 46, TOP = 56;
-    const GA = TOP + 22, YA = GA + 6, GB = YA + QUICK.length * RH + 24, YB = GB + 6;
+    const YA = TOP + 6, GB = YA + QUICK.length * RH + 8, YB = GB + 4;
     const BOT = YB + SLOW.length * RH;
 
     const row = ([what, a, b, kind, fix, partly], y) => {
@@ -75,10 +75,8 @@
         if (d < D) s.label(dx(d), AXY, d === 0 ? "oct 19" : d < 13 ? String(19 + d) : `nov ${d - 12}`, { anchor: "middle", cls: "tiny" });
       }
       s.rect(0, TOP, X1, 1, "k", { color: T.axis, bg: true });
-      s.label(0, GA, "fixed within a day", { cls: "mono" });
       QUICK.forEach((r, i) => row(r, YA + i * RH));
-      s.rect(0, GB - 14, X1, 1, "k", { color: T.grid, bg: true });
-      s.label(0, GB, "took days, or never", { cls: "mono" });
+      s.rect(0, GB - 2, X1, 1, "k", { color: T.grid, bg: true });
       SLOW.forEach((r, i) => row(r, YB + i * RH));
     });
   });

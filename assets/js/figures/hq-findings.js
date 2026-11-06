@@ -11,7 +11,7 @@
     "revenue-vs-model-spend": { title: "Model spend against revenue", alt: "Model spend against revenue through November 2. Peter and the Manager used $6,571 of models at API list price, 23% of it the Manager's, and earned $26: about $253 for every $1." },
     "effort-vs-revenue": { title: "Peter's model spend by business line", axis: ["model spend", "usd"] },
     "redirect-run-cost": { title: "Average model cost per run, by what started the run", axis: ["cost per run", "usd"] },
-    "channel-reach": { title: "Peter's outreach by channel, and how much of it reached a person" },
+    "channel-reach": { title: "Peter's outreach by channel" },
     "reply-speed": { title: "How long Peter took to answer a prospect's email" },
     "business-hours": { title: "Emails and form notes arriving in business hours, by country", sub: "9:00 to 17:00 on a weekday, local time.", axis: ["share arriving in business hours", "pct"] },
     "contact-form-failures": { title: "Why contact-form attempts failed", axis: ["share of failed attempts", "pct"] },
