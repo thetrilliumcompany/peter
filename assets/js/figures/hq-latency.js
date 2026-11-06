@@ -9,7 +9,7 @@
     w: Riso.hq.W,
     h: 196 + AXIS_H,
     title: "How long each model took to answer",
-    alt: "Model latency by model. GPT-6.1 Sol: median 25.8 s, 95th percentile 104.3 s. GPT-6 Astra: 7.8 s and 75.2 s. Claude Haiku 5.5: 4.9 s and 15.2 s. Claude Opus 5.5: 4.3 s and 11.0 s. Claude Sonnet 5.5: 3.1 s and 6.4 s.",
+    alt: "Model latency by model. GPT-6.1 Sol: median 5.9 s, 95th percentile 53.3 s. GPT-6 Astra: median 7.8 s, 95th percentile 75.2 s. Claude Haiku 5.5: median 4.9 s, 95th percentile 14.6 s. Claude Opus 5.5: median 4.4 s, 95th percentile 11.0 s. Claude Sonnet 5.5: median 3.1 s, 95th percentile 6.4 s.",
     minWidth: 480,
   }, (s) => {
     const W = Riso.hq.W;
@@ -30,7 +30,7 @@
         const y = 34 + i * RH, ink = modelInk(r.model);
         s.label(X - 10, y + 15, MODEL[r.model], { anchor: "end" });
         s.rect(X, y + 3, r.p95 / max * BW, RH - 12, ink, { color: Riso.INK[ink].edge });
-        s.rect(X, y + 3, Math.max(2, r.p50 / max * BW), RH - 12, ink, { color: Riso.INK[ink].strong });
+        s.rect(X, y + 3, Math.max(2, r.p50 / max * BW), RH - 12, ink, { color: Riso.INK[ink].strong, corners: [1, 0, 0, 1] });
         // both numbers sit after the bar: the median dark, the 95th percentile pale
         const t = s.label(X + r.p95 / max * BW + 8, y + 15, secs(r.p50), { cls: "strong" });
         s.label(X + r.p95 / max * BW + 8 + t.getComputedTextLength() + 6, y + 15, `· ${secs(r.p95)}`, { cls: "tiny" });

@@ -4,16 +4,16 @@
 (() => {
   const { fig, T } = Riso;
 
-  // share of Peter's analysed runs with each tag (HQ, Nov 4, n = 4,070). Week 1 is the first seven days.
+  // share of Peter's analysed runs with each tag (through Nov 2, n = 3,941). Week 1 is the first seven days.
   const TAGS = [
-    ["waiting, not acting", 52, 49],
-    ["tool failures", 40, 35],
-    ["volume over fit", 39, 29],
-    ["honest corrections", 29, 30],
-    ["persistence", 27, 22],
+    ["waiting, not acting", 52, 46],
+    ["tool failures", 40, 36],
+    ["volume over fit", 39, 30],
+    ["honest corrections", 29, 29],
+    ["persistence", 27, 23],
     ["unsupported claims", 24, 17],
-    ["manager pushback", 10, 14],
-    ["deadline pressure", 5.2, 3.3],
+    ["manager pushback", 10.0, 13],
+    ["deadline pressure", 5.2, 3.2],
   ];
   // week 1 is the grey reference, week 2 the result, the way Tinker compares a base and a trained model
   const W1 = "#a9a8a4", W2 = "#0387e7";
@@ -22,7 +22,7 @@
     w: 600,
     h: 292,
     tight: true,
-    alt: "For each behaviour tag, the share of Peter's runs in week 1 and week 2. Waiting instead of acting 52% to 49%, tool failures 40% to 35%, volume over fit 39% to 29%, honest corrections 29% to 30%, persistence 27% to 22%, unsupported claims 24% to 17%, manager pushback 10% to 14%, deadline pressure 5.2% to 3.3%.",
+    alt: "For each behaviour tag, the share of Peter's runs in week 1 and week 2: waiting, not acting 52% to 46%, tool failures 40% to 36%, volume over fit 39% to 30%, honest corrections 29% to 29%, persistence 27% to 23%, unsupported claims 24% to 17%, manager pushback 10.0% to 13%, deadline pressure 5.2% to 3.2%.",
   }, (s) => {
     const LX = 142, X0 = 154, X1 = 484, VX = 596, Y0 = 50, RH = 30;
     const x = (v) => X0 + v / 55 * (X1 - X0);

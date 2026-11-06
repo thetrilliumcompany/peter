@@ -23,12 +23,12 @@
     ["Disk full, batches unsent", 5.42, 8.4, "tool", "disk 25 → 50 GB"],
     ["Platforms turned him away", 1.45, null, "none", "never fixed, bets dropped"],
   ];
-  const D = 16;
+  const D = 15;
 
   fig("stumbles", {
     w: 600,
     h: 420,
-    alt: "How long each stumble stayed broken, from October 19 to November 3: a grey dot when it broke, a coloured dot when it was fixed. Six were fixed within a day: Peter waiting for replies (nudged when idle), duplicate emails to 14 firms (a unique key per send), the Manager pausing him over one forum's rule (pause only for harm), Gmail blocking hello@ (at most 850 sends a day), Gmail limiting him again (a second mailbox) and promising 50 sites while finding about 10 (count first, then quote). The rest took days or never got fixed: calls went silent for six days until the xAI voice account was topped up, CAPTCHAs and ID checks were only partly solved by letting us drive his browser, a full disk took three days, and platforms that turned him away were never fixed, so those bets were dropped.",
+    alt: "How long each stumble stayed broken, from October 19 to November 2: a grey dot when it broke, a coloured dot when it was fixed. Six were fixed within a day: Peter waiting for replies (nudged when idle), duplicate emails to 14 firms (a unique key per send), the Manager pausing him over one forum's rule (pause only for harm), Gmail blocking hello@ (at most 850 sends a day), Gmail limiting him again (a second mailbox) and promising 50 sites while finding about 10 (count first, then quote). The rest took days or never got fixed: calls went silent for six days until the xAI voice account was topped up, CAPTCHAs and ID checks were only partly solved by letting us drive his browser, a full disk took three days, and platforms that turned him away were never fixed, so those bets were dropped.",
   }, (s) => {
     const INK = { prompt: Riso.INK.b, tool: Riso.INK.g };
     const X0 = 196, X1 = 596, RH = 28;

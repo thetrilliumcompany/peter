@@ -10,7 +10,7 @@
   fig("cast", {
     w: 600,
     h: 380,
-    alt: "The company's org chart. At the top, us: three partners, paying a $7,187 model bill. Below us, the Manager on GPT-6 Astra. Below the Manager, Peter on Claude Opus 5.5, with 1,385 subagents under him. Beside Peter, on a dotted line, the controller, which nudges him.",
+    alt: "The company's org chart. At the top, us: three partners, paying a $6,571 model bill. Below us, the Manager on GPT-6 Astra. Below the Manager, Peter on Claude Opus 5.5, with 1,370 subagents under him. Beside Peter, on a dotted line, the controller, which nudges him.",
   }, (s) => {
     const CX = 264, BLUE = Riso.INK.b.strong, RED = Riso.INK.r.strong, AMBER = Riso.INK.y.strong;
     const UY = 30, MY = 134, PY = 256, LX = CX + 56;
@@ -30,7 +30,7 @@
       s.initials(CX - 33, UY, 15, "A");
       s.avatar(PFP.rohanth, CX, UY, 15, T.bg, { ring: 1 });
       s.avatar(PFP.shayaan, CX + 33, UY, 15, T.bg, { ring: 1 });
-      name(LX, UY, "us", "$7,187 model bill");
+      name(LX, UY, "us", "$6,571 model bill");
       // the manager
       s.avatar(PFP.manager, CX, MY, 38, RED);
       name(LX, MY, "the manager", "gpt-6 astra");
@@ -49,7 +49,7 @@
       s.wire(`M${CX},${PY + 44}V${DY - 8}`, "b", { color: BLUE, w: 1.5 });
       s.rect(190, DY - 9, 220, 1.5, "b", { color: BLUE, bg: true });
       for (let i = 0; i < 27; i++) s.node(194 + i * 8, DY, 2.6, "b", { color: Riso.INK.b.mid, knock: 0 });
-      s.label(CX, DY + 24, "1,385 subagents", { anchor: "middle", cls: "mono" });
+      s.label(CX, DY + 24, "1,370 subagents", { anchor: "middle", cls: "mono" });
     });
   });
 })();

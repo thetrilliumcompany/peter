@@ -232,7 +232,7 @@
           const y = 30 + i * RH, w = p.total / max * BW;
           s.label(X - 10, y + 16, p.name, { anchor: "end" });
           s.rect(X, y + 4, Math.max(2, w), RH - 14, ink, { color: T.ref });
-          if (p.hit) s.rect(X, y + 4, Math.max(2, p.hit / max * BW), RH - 14, ink, { color: accent(ink) });
+          if (p.hit) s.rect(X, y + 4, Math.max(2, p.hit / max * BW), RH - 14, ink, { color: accent(ink), corners: p.hit === p.total ? [1, 1, 1, 1] : [1, 0, 0, 1] });
           s.label(X + w + 8, y + 16, text(p), { cls: "tiny" });
         });
       });
@@ -276,7 +276,7 @@
         const val = (g) => (o.counts ? fmt(g.n) : g.pct || fmt(g.n));
         const light = (g) => g.rest || g.i >= ordered / 2;
         for (const g of segs) {
-          s.rect(g.x + 0.5, Y, Math.max(1.5, g.w - 1), H, ink, { color: g.rest ? T.ref : shade(g.i) });
+          s.rect(g.x, Y, Math.max(1.5, g.w), H, ink, { color: g.rest ? T.ref : shade(g.i), corners: [+(g.i === 0), +(g.i === segs.length - 1), +(g.i === segs.length - 1), +(g.i === 0)] });
           // the value sits in its bucket when there's room
           if (g.w > s.measure(val(g), { cls: "strong" }) + 12) s.label(g.x + g.w / 2, Y + H / 2 + 5, val(g), { anchor: "middle", cls: "strong", fill: light(g) ? "#262323" : "#fbfbf8" });
         }
@@ -332,8 +332,8 @@
       s.paint(() => {
         xAxis(s, X0, X1 - X0, spend, Y1, Y2 + H, usdTick, "dollars");
         s.label(X0, Y1 - 10, `model spend at list price, $${fmt(Math.round(spend))}`, { cls: "dim" });
-        s.rect(X0, Y1, pw - 1, H, "b", { color: Riso.INK.b.mid });
-        s.rect(X0 + pw + 1, Y1, mw - 1, H, "r", { color: Riso.INK.r.mid });
+        s.rect(X0, Y1, pw, H, "b", { color: Riso.INK.b.mid, corners: [1, 0, 0, 1] });
+        s.rect(X0 + pw, Y1, mw, H, "r", { color: Riso.INK.r.mid, corners: [0, 1, 1, 0] });
         s.label(X0 + 12, Y1 + 30, "peter and subagents", { cls: "strong" });
         s.label(X0 + 12, Y1 + 48, `$${fmt(Math.round(spend - spend * share))}`, { cls: "strong" });
         s.label(X0 + pw + 12, Y1 + 30, "manager", { cls: "strong" });
@@ -402,10 +402,13 @@
           const y = top + i * 40;
           s.label(X - 10, y + 19, c.toLowerCase(), { anchor: "end" });
           let x = X;
+          const shown = S.map((q, j) => (q.pts[i].y * BW >= 1 ? j : -1)).filter((j) => j >= 0);
           S.forEach((q, j) => {
             const v = q.pts[i].y, w = v * BW;
             if (w < 1) return;
-            s.rect(Math.round(x), y + 4, Math.max(2, Math.round(w) - 1), 24, INKS[j], { thin: sel == null || sel === j ? 1 : 3, k: 0.3, p: 3 });
+            // neighbours share an edge: both ends of it come from the same running total
+            const first = +(j === shown[0]), last = +(j === shown[shown.length - 1]);
+            s.rect(Math.round(x), y + 4, Math.max(2, Math.round(x + w) - Math.round(x)), 24, INKS[j], { thin: sel == null || sel === j ? 1 : 3, k: 0.3, p: 3, corners: [first, last, last, first] });
             if (w > 38) s.label(x + w / 2, y + 20, `${Math.round(v * 100)}%`, { anchor: "middle", cls: "tiny" });
             x += w;
           });
@@ -476,10 +479,12 @@
       s.hgrid(GX, W - 2, [0, step, step * 2, step * 3].filter((v) => v <= max), (v) => TOP + 160 - v / max * 150, cfg.tick || ((v) => cfg.fmt(v)));
       cfg.days.forEach((d, i) => {
         let y = TOP + 160;
+        const shown = L.filter((l) => l.v[i] / max * 150 >= 1);
         L.forEach((l) => {
           const h = l.v[i] / max * 150;
           const c = l.color || accent(l.ink);
-          if (h >= 1) s.rect(Math.round(X + i * cw + 3), Math.round(y - h), Math.round(cw - 6), Math.round(h), l.ink, { color: c, fade: sel == null || i === sel ? 1 : 0.35 });
+          const bottom = +(l === shown[0]), top = +(l === shown[shown.length - 1]);
+          if (h >= 1) s.rect(Math.round(X + i * cw + 3), Math.round(y - h), Math.round(cw - 6), Math.round(y) - Math.round(y - h), l.ink, { color: c, fade: sel == null || i === sel ? 1 : 0.35, corners: [top, top, bottom, bottom] });
           y -= h;
         });
         // day labels every third day, whichever day is in focus; its date is written in the corner

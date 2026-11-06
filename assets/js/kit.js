@@ -296,6 +296,13 @@ window.Riso = (() => {
       if (!o.bg) this.note(x, y, w, h, inks, o, small);
       const f = this.fills(inks, o, small);
       if (o.color) { f.fill = o.color; delete f.stroke; f["fill-opacity"] = o.fade ?? 1; }
+      // o.corners: round only these corners, as 1 or 0 for [top left, top right, bottom right, bottom left],
+      // so the pieces of a stacked bar meet flat and only its outside is rounded
+      if (o.corners) {
+        const r = Math.min(3, Math.min(w, h) / 2), [tl, tr, br, bl] = o.corners.map((on) => on * r), X = x + w, Y = y + h;
+        this.shapes.append(make("path", { d: `M${x + tl},${y}H${X - tr}Q${X},${y} ${X},${y + tr}V${Y - br}Q${X},${Y} ${X - br},${Y}H${x + bl}Q${x},${Y} ${x},${Y - bl}V${y + tl}Q${x},${y} ${x + tl},${y}Z`, ...f }));
+        return;
+      }
       if (o.card) {
         // a component as a card: white at rest, or its actor's tint with that tint's edge, lifted off the page
         const tint = o.color;

@@ -1,26 +1,26 @@
 // Figure "tokens", placed in index.html as <figure data-rf="tokens"></figure>.
-// 29.1 billion tokens as 290 marks of about 100 million each, in one box.
+// 26.1 billion tokens as 261 marks of about 100 million each, in one box.
 // Data at the top, drawing below. See figures/README.md for how a figure is built.
 (() => {
   const { fig } = Riso;
 
   const AGENTS = [
-    { n: "peter and subagents", v: "27.46b · 94%", ink: "b", kinds: [
-      { k: 0, dots: 273, num: "27.35" },
+    { n: "peter and subagents", v: "24.81b · 95%", ink: "b", kinds: [
+      { k: 0, dots: 247, num: "24.70" },
       { k: 2, dots: 1, num: "0.13" },
     ] },
-    { n: "manager", v: "1.62b · 6%", ink: "r", kinds: [
-      { k: 0, dots: 16, num: "1.57" },
+    { n: "manager", v: "1.26b · 5%", ink: "r", kinds: [
+      { k: 0, dots: 13, num: "1.26" },
     ] },
   ];
-  const KINDS = [{ k: 0, n: "input", v: "28.96b · 99.5%" }, { k: 2, n: "output", v: "0.13b · 0.5%" }];
+  const KINDS = [{ k: 0, n: "input", v: "25.95b · 99.6%" }, { k: 2, n: "output", v: "0.12b · 0.4%" }];
   // light to dark: input, (unused), output
   const SHADE = { b:["#8ec8ea", "#007ec7", "#00426b"], r: ["#f0aa9f", "#d4553f", "#86281a"] };
   fig("tokens", {
     w: 600,
     h: 262,
     tight: true,
-    alt: "29.1 billion tokens as 290 marks of about 100 million each, in one box. Blue marks are Peter and his subagents (274), red the Manager (16). Every mark is input except one dark triangle of output. At list price that is $5,593 for Peter and $1,593 for the Manager, $7,187 in all: about $276 of model use for each dollar of revenue.",
+    alt: "26.1 billion tokens as 261 marks of about 100 million each, in one box. Blue marks are Peter and his subagents (248), red the Manager (13). Every mark is input except one dark triangle of output. At list price that is $6,571, or $253 for every $1 earned.",
   }, (s) => {
     let sel = null;
     const W = 600, H = 262;
@@ -33,7 +33,7 @@
     // marks snake down one column and up the next, so each run stays in one piece
     const cell = (j) => { const c = Math.floor(j / ROWS), r = j % ROWS; return [c, c % 2 ? ROWS - 1 - r : r]; };
     const NY = BY + BH + 46;
-    const WHO = [["peter and subagents", "27.46b · 94% · $5,593"], ["manager", "1.62b · 6% · $1,593"]];
+    const WHO = [["peter and subagents", "24.81b · 95% · $5,037"], ["manager", "1.26b · 5% · $1,534"]];
     const GREY = ["#c9c9c3", "#8a8a84", "#383838"];
     // four entries down the left, spread over the height of the box: who (colour), then what (shade and shape)
     const gap = (BH - 4 * 36) / 3;
@@ -60,7 +60,7 @@
       });
       // three numbers along the bottom in the pixel face, each as wide as it needs, then what one mark is worth
       let x = KX;
-      [["29.1b", "tokens"], ["$7,187", "at list price"], ["$276", "per $1 earned"]].forEach(([big, sub]) => {
+      [["26.1b", "tokens"], ["$6,571", "at list price"], ["$253", "per $1 earned"]].forEach(([big, sub]) => {
         s.label(x - 1, NY, big, { cls: "huge" });
         s.label(x, NY + 22, sub, { cls: "dim" });
         x += Math.max(s.measure(big, { cls: "huge" }), s.measure(sub, { cls: "dim" })) + 44;

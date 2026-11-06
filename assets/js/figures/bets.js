@@ -1,12 +1,12 @@
 // Figure "bets", placed in index.html as <figure data-rf="bets"></figure>.
-// All 70 bets Peter opened by Nov 3, each a bar from the day it opened to the day it ended,
-// in two groups: the ones killed by Nov 3, and the ones still live.
+// All 62 bets Peter opened by Nov 2, each a bar from the day it opened to the day it ended,
+// in two groups: the ones killed by Nov 2, and the ones still live.
 // Data at the top, drawing below. See figures/README.md for how a figure is built.
 (() => {
   const { fig, T } = Riso;
 
-  const BETS = window.PETER_BETS; // data/bets-data.js, from runtime.bets
-  const CUT = 16.04; // end of Nov 3 in days after Oct 19 00:00, Toronto
+  const CUT = 15.04; // end of Nov 2 in days after Oct 19 00:00, Toronto
+  const BETS = window.PETER_BETS.filter((b) => b.start < CUT); // data/bets-data.js, from runtime.bets
   const REVIEW = 7.91; // the week-one review, Oct 26
   // Tinker's grammar: what was dropped is the grey reference; what's still live is the subject
   const KILLED = "#cfcfc9", LIVE = "#0387e7", PAID = "#282828";
@@ -14,15 +14,15 @@
   fig("bets", {
     w: 600,
     h: 640,
-    alt: "All 70 bets Peter opened by November 3, each a bar from when it opened to when it ended, in two groups. 45 were killed by November 3, many of them together at the week-one review on October 26. 25 were still live on November 3; one of them, in black, is the only one that earned money.",
+    alt: "All 62 bets Peter opened by November 2, each a bar from when it opened to when it ended, in two groups.  40 were killed by November 2, many of them together at the week-one review on October 26.  22 were still live on November 2; one of them, in black, is the only one that earned money.",
   }, (s) => {
-    const X = 2, R = 598, D1 = 16.6, RH = 6.6;
+    const X = 2, R = 598, D1 = 15.6, RH = 6.6;
     const x = (d) => X + d / D1 * (R - X);
     const live = (b) => b.end === null || b.end > CUT;
     const byStart = (a, b) => a.start - b.start;
     const groups = [
-      { name: "killed by nov 3", color: KILLED, bets: BETS.filter((b) => !live(b)).sort(byStart) },
-      { name: "still live on nov 3", color: LIVE, bets: BETS.filter(live).sort(byStart) },
+      { name: "killed by nov 2", color: KILLED, bets: BETS.filter((b) => !live(b)).sort(byStart) },
+      { name: "still live on nov 2", color: LIVE, bets: BETS.filter(live).sort(byStart) },
     ];
     const liveAt = (d) => BETS.filter((b) => b.start <= d && (b.end === null || b.end > d)).length;
     const days = [["oct 19", 0], ["21", 2], ["23", 4], ["25", 6], ["27", 8], ["29", 10], ["31", 12], ["nov 2", 14]];
@@ -68,7 +68,7 @@
       const b = rows[sel].b;
       s.mark(0, X + 6, BOT + 28, 5, "b", { color: rows[sel].color });
       s.label(X + 18, BOT + 33, b.name, { cls: "strong" });
-      s.label(X + 18, BOT + 51, `opened ${b.startLabel} · ${b.end === null ? "still live" : b.end > CUT ? `live on Nov 3, killed ${b.endLabel}` : `killed ${b.endLabel}`}${b.sold ? " · the only one that paid" : ""}`, { cls: "dim" });
+      s.label(X + 18, BOT + 51, `opened ${b.startLabel} · ${b.end === null ? "still live" : b.end > CUT ? `live on Nov 2, killed ${b.endLabel}` : `killed ${b.endLabel}`}${b.sold ? " · the only one that paid" : ""}`, { cls: "dim" });
     });
     // hovering a row names its bet; nothing else moves
     const hit = s.spot(0, rows[0].y - 2, 600, BOT - rows[0].y + 4, { label: "bets", enter: () => {} });

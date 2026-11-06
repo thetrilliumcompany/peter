@@ -13,7 +13,7 @@
     w: Riso.hq.W,
     h: 236 + AXIS_H,
     title: "Each model's share of the spend and of the calls",
-    alt: "Two bars split by model. Share of spend: Claude Opus 5.5 75%, GPT-6 Astra 21%, Claude Haiku 5.5 3%, GPT-6.1 Sol 1%. Share of calls: Claude Haiku 5.5 64%, Claude Opus 5.5 30%, GPT-6 Astra 5%, GPT-6.1 Sol 1%. Haiku made nearly two-thirds of the calls for about 3% of the money.",
+    alt: "Two bars split by model. Share of spend: Claude Opus 5.5 73%, GPT-6 Astra 23%, Claude Haiku 5.5 3%. Share of calls: Claude Haiku 5.5 64%, Claude Opus 5.5 30%, GPT-6 Astra 6%. Haiku made nearly two-thirds of the calls for about 3% of the money.",
     minWidth: 480,
   }, (s) => {
     let sel = null;
@@ -37,8 +37,9 @@
         const my = (Y1 + BH + Y2) / 2;
         const d = `M${a0},${Y1 + BH}C${a0},${my} ${b0},${my} ${b0},${Y2}H${b1}C${b1},${my} ${a1},${my} ${a1},${Y1 + BH}Z`;
         s.area(d, c, off ? 0.05 : 0.18);
-        s.rect(a0, Y1, Math.max(1, a1 - a0 - 1), BH, "b", { color: c, fade: off ? 0.25 : null });
-        s.rect(b0, Y2, Math.max(1, b1 - b0 - 1), BH, "b", { color: c, fade: off ? 0.25 : null });
+        const first = +(i === 0), last = +(i === rows.length - 1), corners = [first, last, last, first];
+        s.rect(a0, Y1, Math.max(1, a1 - a0), BH, "b", { color: c, fade: off ? 0.25 : null, corners });
+        s.rect(b0, Y2, Math.max(1, b1 - b0), BH, "b", { color: c, fade: off ? 0.25 : null, corners });
         const dark = r.model === "claude-opus-5-5" || r.model === "claude-sonnet-5-5" || r.model === "gpt-6-astra";
         const t1 = pct(r.cost / totals.cost), t2 = pct(r.calls / totals.calls);
         if (a1 - a0 > 34 && t1) s.label((a0 + a1) / 2, Y1 + BH / 2 + 5, t1, { anchor: "middle", cls: "strong", fill: dark ? "#fbfbf8" : "#262323" });

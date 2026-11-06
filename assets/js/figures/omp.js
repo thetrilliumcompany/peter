@@ -7,7 +7,7 @@
   fig("omp", {
     w: 600,
     h: 260,
-    alt: "Peter's OMP session as a loop: he works through a turn and hands tasks to subagents, and when the turn ends goal mode sends him round again, 3,702 times by Nov 3. Up to eleven subagents ran at once, 1,385 in all.",
+    alt: "Peter's OMP session as a loop: he works through a turn and hands tasks to subagents, and when the turn ends goal mode sends him round again, 3,665 times by Nov 2. Up to eleven subagents ran at once, 1,370 in all.",
   }, (s, ui) => {
     const BUS = 172, RET = 96, Y = [74, 132, 190], SEAM = 300, POOL = 330;
     // eleven subagent slots, each part-way through its brief
@@ -33,7 +33,7 @@
       s.wire(`M${BUS},${Y[0]}V${Y[2]}`, "b");
       s.wire(`M${BUS},${Y[2]}H${RET}V${Y[0]}H${BUS}`, "b", { arrow: 0.93 });
       s.label(RET - 10, Y[1] - 6, "goal", { anchor: "end", cls: "mono" });
-      s.label(RET - 10, Y[1] + 12, "× 3,702", { anchor: "end", cls: "strong" });
+      s.label(RET - 10, Y[1] + 12, "× 3,665", { anchor: "end", cls: "strong" });
       s.label(BUS + 14, Y[1] - 8, "task", { cls: "mono" });
       // handing work across to the subagents
       s.wire(`M${BUS},${Y[1]}H${POOL - 8}`, "b", { flow: { ms: 1800, n: 2 } });
@@ -50,7 +50,7 @@
         s.rect(x, y, 60, 46, "k", { card: true, color: l.t > 0.94 ? Riso.INK.b.pale : T.cell });
         s.rect(x + 7, y + 7 + 32 * (1 - l.t), 5, Math.max(1, 32 * l.t), "b", { color: l.t > 0.94 ? Riso.INK.b.strong : Riso.INK.b.mid });
       });
-      s.label(POOL, 232, "× 1,385", { cls: "strong" });
+      s.label(POOL, 232, "× 1,370", { cls: "strong" });
     });
     ui.whileVisible((t) => {
       if (t - last < 50) return;

@@ -9,7 +9,7 @@
     w: 600,
     h: 262,
     morph: false,
-    alt: "One of Peter's compactions, to scale. The context window holds a million tokens; about 850,000 of them collapse to about 75,000: a structured summary of the goal, constraints, progress, decisions and next steps, plus the last 20,000 tokens kept word for word. Below, compactions so far: 56 for Peter and 64 for the Manager.",
+    alt: "One of Peter's compactions, to scale. The context window holds a million tokens; about 850,000 of them collapse to about 75,000: a structured summary of the goal, constraints, progress, decisions and next steps, plus the last 20,000 tokens kept word for word. Below, compactions so far: 55 for Peter and 64 for the Manager.",
   }, (s, ui) => {
     const W = (n) => n / 1_000_000 * 600;
     let v = 850_000, done = false;
@@ -34,7 +34,7 @@
         s.label(248, 103, "the last ~20,000 tokens, word for word", { cls: "strong" });
       }
       // compactions so far, one tick each
-      for (const [name, n, ink, y] of [["peter", 56, "b", 214], ["manager", 64, "r", 242]]) {
+      for (const [name, n, ink, y] of [["peter", 55, "b", 214], ["manager", 64, "r", 242]]) {
         s.label(0, y + 5, name, { cls: "mono" });
         for (let i = 0; i < n; i++) s.rect(80 + i * 6.6, y - 9, 3.4, 18, ink, { color: Riso.INK[ink].strong });
         s.label(80 + n * 6.6 + 8, y + 5, `${n}`, { cls: "strong" });

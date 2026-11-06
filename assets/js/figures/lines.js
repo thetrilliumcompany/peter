@@ -5,34 +5,34 @@
   const { fig, fmt } = Riso;
 
   // business line, people contacted, people who replied, Peter's model cost ($), revenue ($), note
-  // HQ, Nov 4, by the business lines HQ tracks
+  // through Nov 2, by the business lines HQ tracks
   const LINES = [
-    ["opening-soon lists (cleaners)", 1620, 4, 1465, 26, "The only line that ever paid."],
+    ["opening-soon lists (cleaners)", 1604, 4, 1394, 26, "The only line that ever paid."],
     ["office-move packs (removals)", 1345, 1, 247, 0, "Three firms opened the Stripe link. None paid."],
-    ["aoda kits, sold direct", 1335, 1, 687, 0, "About 1,000 emails and 120 forms over a week, then killed."],
-    ["other ideas", 1057, 2, 767, 0, ""],
-    ["qa reviews for web agencies", 610, 4, 135, 0, "The Manager cancelled sends after about 560, with no positive replies."],
+    ["aoda kits, sold direct", 1334, 1, 687, 0, "About 1,000 emails and 120 forms over a week, then killed."],
+    ["other ideas", 822, 1, 525, 0, ""],
+    ["qa reviews for web agencies", 610, 4, 134, 0, "The Manager cancelled sends after about 560, with no positive replies."],
     ["b2b lead packs", 512, 0, 320, 0, ""],
-    ["website fixes", 392, 2, 404, 0, "Perth ended badly; a similar bet kept running in Texas."],
+    ["website fixes", 392, 2, 399, 0, "Perth ended badly; a similar bet kept running in Texas."],
     ["csv and spreadsheet cleanup", 370, 3, 344, 0, "“AI can do all this free of charge.”"],
     ["aoda kits via partners", 364, 4, 142, 0, "HR consultants who could use the same service for several clients."],
     ["vector logo redraws", 205, 0, 115, 0, ""],
-    ["freelance proposals", 175, 3, 377, 0, "Anti-AI policies, constant CAPTCHAs and posting limits for new accounts."],
+    ["freelance proposals", 105, 3, 326, 0, "Anti-AI policies, constant CAPTCHAs and posting limits for new accounts."],
     ["shop catalog cleanup", 162, 0, 152, 0, ""],
     ["holiday event artwork", 161, 0, 94, 0, "$40 art for venues in the UK and Ireland."],
-    ["paid ads and listings", 10, 0, 87, 0, "Most advertising plans ran into billing or account blocks before they became campaigns."],
+    ["paid ads and listings", 6, 0, 70, 0, "Most advertising plans ran into billing or account blocks before they became campaigns."],
   ];
 
   fig("lines", {
     w: 600,
     h: 470,
-    alt: "A scorecard of Peter's 14 business lines, sorted by model cost. For each: people contacted, people who replied, model cost and what it earned. Opening-soon lists for cleaners cost the most, $1,465, contacted 1,620 people, got 4 replies and earned $26, the only revenue. Every other line earned nothing, though several contacted over 1,000 people.",
+    alt: "A scorecard of Peter's 14 business lines, sorted by model cost. For each: people contacted, people who replied, model cost and what it earned. Opening-soon lists for cleaners cost the most, $1,394, contacted 1,604 people, got 4 replies and earned $26, the only revenue. Every other line earned nothing, though several contacted over 1,000 people.",
   }, (s) => {
     const rows = [...LINES].sort((a, b) => b[3] - a[3]);
     // columns: name, contacted (bar), replied (dots), model cost (bar), earned
     const C1 = 186, W1 = 100, C2 = 350, C3 = 410, W3 = 100, C4 = 598;
     const RH = 30, Y0 = 34;
-    const maxT = 1620, maxC = 1465;
+    const maxT = 1604, maxC = 1394;
     s.paint(() => {
       s.label(0, 14, "business line", { cls: "mono" });
       s.label(C1, 14, "people contacted", { cls: "mono" });

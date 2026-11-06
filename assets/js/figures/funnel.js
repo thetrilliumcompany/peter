@@ -5,14 +5,14 @@
   const { fig, fmt } = Riso;
 
   // HQ, Nov 4: an automated sample of emails and form notes
-  const SENT = 7103, REPLIED = 171, PEOPLE = 23, NOT_NO = 12;
+  const SENT = 6889, REPLIED = 166, PEOPLE = 22, NOT_NO = 11;
   const C = { sent: "#c9c9c3", replied: "#8a8a84", people: "#8ec9f4", notNo: "#0387e7", paid: "#282828" };
 
   fig("funnel", {
     w: 600,
     h: 280,
     tight: true,
-    alt: "Three panels. The first holds 7,103 dots, one per email or form note Peter sent; a small block of 171 in its corner got any reply. The second zooms into those 171: 23 were a person writing back. The third zooms into the 23: 12 didn't say no, 11 said no or asked to be removed, and one customer paid ($26).",
+    alt: "Three panels. The first holds 6,889 dots, one per email or form note Peter sent; a small block of 166 in its corner got any reply. The second zooms into those 166: 22 were a person writing back. The third zooms into the 22: 11 didn't say no, 11 said no or asked to be removed, and one of them paid, $26 in all.",
   }, (s) => {
     // n dots in rows of `cols`, from (x, y), g apart
     const grid = (n, cols, x, y, g) => Array.from({ length: n }, (_, i) => [x + (i % cols) * g, y + Math.floor(i / cols) * g]);
@@ -25,13 +25,13 @@
       return [x0, y0, Math.max(...xs) + pad - x0, Math.max(...ys) + pad - y0];
     };
     const TOP = 26;
-    // panel 1: all 7,103; the 171 replies are the 13-wide block in its corner
+    // panel 1: all 6,889; the 166 replies are the 13-wide block in its corner
     const sent = grid(SENT, 84, 3, TOP + 2, 2.86);
     const rIdx = new Set(corner(sent, 84, 13, REPLIED));
-    // panel 2: the 171; the 23 people are the 5-wide block in its corner
+    // panel 2: the 166; the 22 people are the 5-wide block in its corner
     const replies = grid(REPLIED, 13, 296, TOP + 6, 10.6);
     const pIdx = new Set(corner(replies, 13, 5, PEOPLE));
-    // panel 3: the 23
+    // panel 3: the 22
     const people = grid(PEOPLE, 5, 474, TOP + 12, 26.2);
     s.paint(() => {
       // zoom bands first, so the dots sit on top
@@ -46,7 +46,7 @@
       s.marks(sent.filter((_, i) => rIdx.has(i)).flat(), "k", { color: C.replied, dot: 1.9 });
       s.marks(replies.filter((_, i) => !pIdx.has(i)).flat(), "k", { color: C.replied, dot: 7.2 });
       s.marks(replies.filter((_, i) => pIdx.has(i)).flat(), "k", { color: C.people, dot: 7.2 });
-      // the 12 who didn't say no first, the one who paid at the very front
+      // the 11 who didn't say no first, the one who paid at the very front
       people.forEach(([x, y], i) => s.mark(0, x, y, 8.4, "b", { color: i === 0 ? C.paid : i < NOT_NO ? C.notNo : C.people }));
       // what each panel holds
       const head = (x, n, what) => { const t = s.label(x, 14, fmt(n), { cls: "strong" }); s.label(x + t.getComputedTextLength() + 6, 14, what, { cls: "dim" }); };

@@ -200,6 +200,7 @@ figure.art { margin: 36px 0 40px; }
 /* ---------- a figure: outer edge, inner panel ---------- */
 figure { margin: 0; }
 /* figures sit straight on the page: no border, no panel */
+figure[id] { scroll-margin-top: calc(var(--top) + 24px); }
 figure.rf { margin: 36px 0 40px; padding: 0; border: 0; background: none; }
 /* a run of figures (the appendix) gets more air between them than text does */
 figure.rf + figure.rf { margin-top: 56px; }
