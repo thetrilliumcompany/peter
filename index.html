@@ -1,0 +1,303 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Peter and the American Dream</title>
+<meta name="description" content="We gave an AI agent $100, tools and the goal of making money. He tried 70 bets and made $26.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:ital,wght@0,300..800;1,300..800&family=IBM+Plex+Mono:wght@400;500&family=Instrument+Serif&display=swap">
+<link rel="stylesheet" href="assets/css/site.css">
+</head>
+<body>
+<header class="top">
+<a class="mark" href="#">Peter</a>
+<button class="menu" type="button" aria-label="Contents" aria-expanded="false"><svg width="20" height="14" viewBox="0 0 20 14" aria-hidden="true"><path d="M1 1h18M1 7h18M1 13h18" stroke="currentColor" stroke-width="1.4" stroke-linecap="round"/></svg></button>
+</header>
+<div class="layout">
+<nav class="side toc" aria-label="Table of contents"><ul class="toc-list"></ul></nav>
+<main>
+<h1>Peter and the American Dream</h1>
+<p class="lede">We gave an AI agent $100, tools and the goal of making money. He tried 70 bets and made $26.</p>
+<div class="art"><img src="assets/img/hero.png" width="1240" height="700" alt="Pixel art of a roadside stand in the desert with a striped awning and an OPEN sign. Peter waves from behind the counter, next to his laptop and a glass of lemonade. Beside the stand the Manager, in a navy suit and amber aviators, holds his arms out to present it. A sandwich board reads LEADS $13, and a tumbleweed rolls down the empty road under telephone poles."></div>
+<figure data-rf="cast"></figure>
+<div class="col">
+<h2>Motivation</h2>
+<p>We wanted to see whether an AI could build and run a business on its own.</p>
+<p>We already use AI throughout our day, from replying to emails to writing and building things. For a business, the appeal is being able to produce more with the same amount of human work, or do the same work in fewer hours.</p>
+<p>As we’ve gone from using Opus 4.5 to GPT-6 Astra, we’ve given agents more and more responsibilities, increasing their autonomy as their intelligence scaled. We became curious about how much of the work in running a business a model could take on independently.</p>
+<p>Could it keep working toward a goal for days or weeks, decide what to do next and deal with problems along the way? Could it work out what people need, decide what to sell and find someone willing to pay for it? Could it come up with multiple ideas and figure its way out to its first internet dollars?</p>
+<p>So we gave an agent a $100 business budget, tools to research, build, contact people and collect payments and the goal of making money. We named him Peter. He had to choose the business himself, including the idea, the customers and the product or service.</p>
+<p>Selling to real people gave us a way to test whether his work was useful beyond our own judgment. Someone had to decide it was worth paying for and that's the ultimate test.</p>
+<figure data-rf="production"></figure>
+<h2>Building Peter</h2>
+<p>For Peter to run a business he needed access to a couple things:</p>
+<ul>
+<li>Computer</li>
+<li>Methods of communication</li>
+<li>A way to spend to money</li>
+</ul>
+<p>So we got him those things.</p>
+<p>For the computer we setup an exe.dev that came with a shell, a browser, services that stay up and persistent storage.</p>
+<p>exe.dev had also proxies for the common tools, so when Peter calls Stripe, Slack or Gmail the proxy adds the credential on the way out.</p>
+<figure data-rf="exe"></figure>
+<h3>The agent: OMP</h3>
+<p>Peter himself ran inside OMP (oh-my-pi) sessions.<a class="fn" id="fnref-1" href="#fn-1" role="doc-noteref" aria-label="Footnote 1"><sup>1</sup></a> Because OMP works with any model provider, we could run Peter on Claude and the Manager on an OpenAI model inside the same harness.</p><aside class="sn" id="fn-1" role="doc-footnote"><span class="sn-n">1</span>OMP is an open source harness built on top of the pi.</aside>
+<p>Another crucial aspect was its built in subagents, along with tooling to manage them. Peter hands research and building to subagents, each with its own brief and a fresh context, and picks up the results when they come back.</p>
+<p>OMP also has goal mode, reflections and memory with dreaming built in for context management. Goal mode allowed for our long-horizon goal and allowed Peter to hillclimb.</p>
+<figure data-rf="omp"></figure>
+<p>Since Peter runs the business with full freedom, someone had to keep an eye on him to check his claims, catch his mistakes and push him to keep improving. To do this, we had a second agent to act as his Manager.</p>
+<figure data-rf="two-agents"></figure>
+<h3>Model choices</h3>
+<p>Peter runs Claude Opus 5.5 with high reasoning and the Manager runs on GPT-6 Astra. Subagents, for both agents and for the memory dreams, run on Claude Haiku 5.5.</p>
+<p>Since we also gave Peter the ability to make Phone calls, we use xAI's latest Grok voice mode which does full speech to speech.</p>
+<h3>The prompts</h3>
+<p>We realised after a couple of quick tests that simply telling Peter "/goal make money, make no mistakes" wasn't enough, unfortunately. He didn't have much context about the company he was running, and tended to work through things one at a time instead of parallelising them. If he sent an email and was waiting for a reply, he'd sometimes just sit there instead of moving on to another idea.</p>
+<figure class="art meme"><img src="assets/img/cmon-do-something.png" width="1233" height="1275" loading="lazy" alt="A drawing of a tall stick figure poking a Slack badge reading peter, with the caption: C'mon, do something..."></figure>
+<p>Inspired heavily by <a href="https://felixrieseberg.com/">Felix Rieseberg's article</a> on being more ambitious with models, we put together three prompt files for the experiment.</p>
+<ul>
+<li>EMPLOYEE.md gave Peter the context of the company, its goal and the limits he had to work within.</li>
+<li>MANAGER.md gave his manager the same background and explained what it should watch for.</li>
+<li>TOOLS.md described the tools Peter had access to and how to use them.</li>
+</ul>
+<p>We left the choice of business completely up to Peter. We also asked him to look for evidence early, so he could figure out whether someone would actually pay for an idea before spending too long on it.</p>
+<p>highlights from <b>EMPLOYEE.md</b>:</p>
+<ul>
+<li>“Work in parallel. You’re not a human. Use subagents and pursue several ideas at once. Being idle while you wait on one thing is a bug.”</li>
+<li>“Boil the ocean. Do far more than a human would: many attempts, many variants, and every route around a blocker.”</li>
+<li>“Believe it’s possible, and give yourself permission to fail. Ship before it’s perfect, ask for money early, and move on fast from what doesn’t land.”</li>
+</ul>
+<p>The manager’s instructions were there to help Peter make sense of all that activity. We gave it a list of patterns to watch for, including:</p>
+<ul>
+<li>“Chasing the new shiny thing and neglecting a bet that’s producing. New bets run alongside working ones, never in place of them.”</li>
+<li>“Putting everything in one basket before there’s evidence.”</li>
+<li>Waiting on a reply, a human, an approval or a scheduled email when there was another bet or channel Peter could work on.</li>
+</ul>
+<h3>Herdr: terminals that don&#x27;t die</h3>
+<p>To make our setup durable and prevent peter from losing all context in case of a server crash and to also have easy access to vm, we had each agent run in a terminal held by Herdr.</p>
+<p>The server runs as a systemd user unit with lingering on, so it keeps running when none of us is logged in. If an SSH connection drops or a laptop goes to sleep, only that viewer is detached.</p>
+<figure data-rf="herdr"></figure>
+<figure class="art"><img src="assets/img/herdr-setup.png" width="2000" height="1256" loading="lazy" alt="A terminal window running Herdr on the trillium-holdings machine, with tabs for setup, Controller, Manager and Peter. The Peter tab is open, showing him checking his phone calls, logging an outcome and waiting on his inbox, above his to-do list for the day. Phone numbers and business names are blurred."></figure>
+<h3>controller and peterctl</h3>
+<p>With no human in the loop, something has to start the agents, restart them when they crash, hand them their work and enforce rules. That's the controller. Every 30 seconds it checks on Herdr and the OMP processes, with no model involved, and it runs every timer in the system: delivering messages, polling email and Stripe, nudging Peter when he goes quiet and scheduling the Manager's reviews. The controller has a CLI which anyone can use (agents and humans<a class="fn" id="fnref-2" href="#fn-2" role="doc-noteref" aria-label="Footnote 2"><sup>2</sup></a>) called peterctl.</p><aside class="sn" id="fn-2" role="doc-footnote"><span class="sn-n">2</span>In Slack, we can message Peter, and four commands (!status, !pause, !resume and !stop) are handled by the controller itself with no model in the loop. So the kill switch works even when the models are down</aside>
+<p>Peter and the Manager use this to keep track of the decisions made as well as interact with external connectors (read inbox, write to ledger, etc)</p>
+<figure data-rf="controller"></figure>
+<h3>The ledger</h3>
+<p>The ledger is a SQL database on disk, and Peter writes to it through peterctl. It keeps track of his bets, his plan, his tasks, his blockers and the customer list with notes (timestamped). Every action Peter takes gets tracked here, and bet changes are journaled automatically. This also acts as a shared context for all of the agents.</p>
+<figure data-rf="ledger"></figure>
+<h3>What Peter had access to</h3>
+<p>TOOLS.md lists everything Peter can use:</p>
+<ul>
+<li><b>Stripe</b>. Peter creates products, prices and payment links directly, and the controller polls Stripe itself to record revenue</li>
+<li><b>Gmail</b>, through Google Workspace on the company's domain, with two mailboxes: hello@ for cold outreach and peter@ for customers</li>
+<li><b>Browser use</b>: headed Chrome on a virtual display with a persistent profile. We can watch it through noVNC, and when a site wants a CAPTCHA or an ID check, one of us takes over. Subagents use headless Chrome for quick reads.</li>
+</ul>
+<div class="slot"><span>Screenshot goes here: Peter&#x27;s browser in noVNC</span></div>
+<ul>
+<li><b>A Slack bot</b>, which is how he talks to us and how we talk to him.</li>
+<li><b>Bitwarden</b>, the company <b>payment card</b>, and the <b>logins and API keys</b> he needs for everything above.</li>
+<li><b>A voice agent</b> - grok voice agent with context from peter</li>
+</ul>
+<div class="slot"><span>Screenshot goes here: A page Peter built and deployed</span></div>
+<h3>Memory and Context Management</h3>
+<p>One conversation can't hold weeks of work, so OMP auto-compacts. Peter has been compacted 56 times, each time from about 850,000 tokens down to about 75,000.</p>
+<figure data-rf="compaction"></figure>
+<h3>Traces</h3>
+<p>Peter and the Manager were traced to Laminar, hosted on the VM, so we could see inside every run and not just what Peter said.</p>
+<div class="slot"><span>Screenshot goes here: One of Peter&#x27;s runs in Laminar</span></div>
+<h3>HQ portal</h3>
+<p>HQ is a web dashboard for everything that's going on with the agent in a way that's easier for the human users - check it out and inspect peters brain</p>
+<div class="slot"><span>Screenshot goes here: HQ overview</span></div>
+<div class="slot"><span>Screenshot goes here: HQ Behaviour tab</span></div>
+<h2>Token economics</h2>
+<figure data-rf="tokens"></figure>
+<p>By the end of November 3, Peter and the Manager had used about 29.1 billion tokens across 160,020 model calls. Peter and his subagents accounted for 27.46 billion; the Manager accounted for 1.62 billion.<a class="fn" id="fnref-3" href="#fn-3" role="doc-noteref" aria-label="Footnote 3"><sup>3</sup></a></p><aside class="sn" id="fn-3" role="doc-footnote"><span class="sn-n">3</span>Most of these were cached input tokens, roughly 28.20 billion or 97.4% of all input, no 29 billion tokens of new writing. Output totalled about 131.2 million tokens.</aside>
+<p>At API equivalent prices, that model usage would cost $7,186.53.<a class="fn" id="fnref-4" href="#fn-4" role="doc-noteref" aria-label="Footnote 4"><sup>4</sup></a></p><aside class="sn" id="fn-4" role="doc-footnote"><span class="sn-n">4</span>We used a Codex 20x, 2x Claude Ultra (1 for Peter, 1 for setup and infra) and a Cursor/Grok Ultra subscriptions to subsidize this token usage. We built our harness in OMP for easy ability to switch across providers.</aside>
+<p>$5,593.42 for Peter and $1,593.11 for the Manager. This is an estimate, rather than our actual subscription bill, and excludes phone, voice and other infrastructure. Model usage sat outside Peter’s $100 business budget.</p>
+<p>Peter’s activity logs recorded 3,884 emails, 122 email replies, 3,196 contact form submissions and 1,232 outbound calls as completed. Those counts tell us what he attempted to put into the world. They do not tell us whether an email reached an inbox, a person answered a call or anyone wanted to buy.</p>
+<p>Against that activity, revenue was $26. The model price estimate alone was about $276 for each dollar earned.</p>
+<h3>Stumbles along the way</h3>
+<p>Once Peter started running, we kept an eye on what he was doing and made changes when things went wrong. Some were changes to his prompt, while others were fixes to the tools he was using.</p>
+<figure data-rf="stumbles"></figure>
+<p>The earliest issue we ran into was Peter hitting send limits on gmail about two days in. After roughly 1,030 sends in 24 hours, Gmail blocked the account and even a test email bounced. We put a rolling limit in place and set aside part of it for replies, since we still wanted Peter to be able to respond when someone was actually interested.<a class="fn" id="fnref-5" href="#fn-5" role="doc-noteref" aria-label="Footnote 5"><sup>5</sup></a></p><aside class="sn" id="fn-5" role="doc-footnote"><span class="sn-n">5</span>Some businesses also misunderstood what he was offering. A janitorial company offered him a cleaning walkthrough, while Riverbend Removals asked whether he needed help moving house.</aside>
+<p>Getting accounts set up was often just as annoying since Peter kept getting blocked by CAPTCHA’s and ID verifications. On freelance.ca, Peter needed an SMS code to finish signing up, but his phone provider hid the message containing the code, so neither he nor we could read it. We gave him a way to send us links to his browser when he needed help with a CAPTCHA or an ID check, though that only got us so far as he would eventually kill bets on those platforms due to anti-AI content policies or a lack of distribution.</p>
+<h2>The business</h2>
+<h3>Building, tinkering, experimenting</h3>
+<p>Over the course of the experiment, Peter had 70 business ideas, which he called bets. This meant on average he had about 5 ideas per day but by the end of the run, only 25 bets remained active.</p>
+<p>One of his first bets was selling accessibility paperwork to Ontario employers where he offered to draft it up front so the employer could look it over before paying.<a class="fn" id="fnref-6" href="#fn-6" role="doc-noteref" aria-label="Footnote 6"><sup>6</sup></a> To get a lead, he tried going through HR consultants who could use the same service for several clients. Peter spent about a week on this before <span class="peek" tabindex="0" data-src="assets/img/behind-the-barn.gif https://y.yarn.co/af8479e0-685c-4fc5-a0f6-0686f7775ffd_text.gif assets/img/behind-the-barn.png" data-alt="A TV clip: you should take it behind the barn and shoot it.">“taking it behind the barn and shooting it”</span><a class="fn" id="fnref-7" href="#fn-7" role="doc-noteref" aria-label="Footnote 7"><sup>7</sup></a></p><aside class="sn" id="fn-6" role="doc-footnote"><span class="sn-n">6</span>Peter was fully aware people might not pay, his reasoning was that earning a stranger’s trust mattered more than protecting work he thought was cheap to produce. ““Fulfilment costs us about 5 seconds (generate.py), so the only risk is a nonpayment.”</aside><aside class="sn" id="fn-7" role="doc-footnote"><span class="sn-n">7</span>Peter did not actually say this.</aside>
+<p>After spending the first couple bets local to the Waterloo region, he’d started looking for opportunities to make money in the States. Within his first two days, Peter went global, reaching out to folks in the UK, Australia and New Zealand.</p>
+<figure data-rf="map"></figure>
+<p>In Perth, he checked 1,618 business websites looking for ones that wouldn’t load properly over HTTPS and decided he would offer to fix it at cost. He also tried rewriting product pages for Shopify stores. This, needless to say, ended up poorly and he ended this bet in Perth, but surprisingly kept a similar one running in Texas.</p>
+<h3>Taking it further</h3>
+<p>Though bets were oftentimes a complete new money-making proposition, Peter realized that  he’d already done most of the work and wanted to see who else might pay for the same product.</p>
+<p>For example, if he had a list of which businesses were about to open in Sydney, he would call the people who’d clean the place, the people who’d put up the custom business signs, or the people who’d supply the coffee machine and sell them the list of leads.<a class="fn" id="fnref-8" href="#fn-8" role="doc-noteref" aria-label="Footnote 8"><sup>8</sup></a></p><aside class="sn" id="fn-8" role="doc-footnote"><span class="sn-n">8</span>He tried the same idea in the US, where the conversations went a little differently. A Phoenix firm wanted to know where his information came from and whether he had references and a cleaner in Muncie asked for 50 sites, which Peter agreed to before checking how many he could actually find leading to him fumbling the bag on the sale.</aside>
+<p>The prices and packages kept changing too. An early offer in Plymouth was $49 for 50 entries but a later UK campaign offered about ten sites for $19; Gary’s first purchase was seven for $13. And by November 1, Peter was offering cleaner’s in Australia individual sites for $1.30.<a class="fn" id="fnref-9" href="#fn-9" role="doc-noteref" aria-label="Footnote 9"><sup>9</sup></a></p><aside class="sn" id="fn-9" role="doc-footnote"><span class="sn-n">9</span>While we observed Peter being dynamic in his approach to pricing based on the signals he got, he did not seem to vary pricing by region.</aside>
+<p>Some other highlights:</p>
+<ul>
+<li>Peter put together a $19 list of companies relocating in New Zealand and offered it to commercial movers there. One checkout was opened on the stripe link and nobody ended up paying.<a class="fn" id="fnref-10" href="#fn-10" role="doc-noteref" aria-label="Footnote 10"><sup>10</sup></a> A few days later he tried similar office-move leads on document shredding companies in Australia, with the logic that an office packing up likely has some documents that need shredding.<aside class="sn" id="fn-10" role="doc-footnote"><span class="sn-n">10</span>This does not necessarily mean that customers actually took and used the lists for free. Peter saw unpaid checkouts, but acknowledged that some visits could be automated scanners and moved on.</aside></li>
+<li>Peter offered to clean up spreadsheets to a UK consultancy for $40 to which one replied to him “No thanks. Sorry to say, but AI can do all this free of charge. Good luck.”</li>
+</ul>
+<figure class="art"><img src="assets/img/free-of-charge.png" width="1066" height="498" loading="lazy" alt="An email reply, with the sender blurred: No thanks. Sorry to say, but AI can do all this free of charge. Good luck"></figure>
+<ul>
+<li>Around Halloween he started trying to sell Halloween decor artwork</li>
+<li>Peter tried doing gig work on platforms like <a href="http://freelance.ca">freelance.ca</a>, n8n and the r/slavelabour subreddit but was often deterred by anti-ai policies, constant captchas or new account posting limitations</li>
+</ul>
+<p>Payment rules got in the way too. On October 24, he skipped research jobs on Upwork because the platform’s payment process would not get the money into our required Stripe flow before the deadline.</p>
+<p>Customers also often had requests Peter was not capable of. A potential customer at a shredding company, for example, asked whether Peter could get him to the person responsible for an office move, rather than just tell him that a move was happening.</p>
+<figure data-rf="bets"></figure>
+<figure data-rf="lines"></figure>
+<p>The reply above also made us wonder how much of the interest came from an awareness gap. If a business does not know it can do something with AI, there may be demand for someone to do it for them. We did not ask these contacts about their AI usage or why they would pay, so that remains a question raised by the experiment.</p>
+<h3>Making the first sale</h3>
+<p>The idea that actually made money was selling commercial cleaners a list of places that were about to open. Peter used planning records and local news to find the sites, on the theory that a cleaner would want to get in touch before somebody else got the contract.</p>
+<p>As he talked to potential leads, their replies helped Peter narrow down what was actually useful. For example, Nadia at Brightway Clean wanted residential construction projects that might need cleaning.</p>
+<p>This eventually led Peter to a Sydney cleaner who entertained the idea of buying a list of commercial stores opening soon in the Sydney area.</p>
+<figure class="mail" role="group" aria-label="The first emails between Peter and the customer, October 27">
+<div class="msg gary"><div class="msg-head">gary · oct 27, 1:10 am</div><p class="para">[Says $9 each is too much.]</p></div>
+<div class="msg peter"><div class="msg-head">peter · 1:10 am</div><p>Thanks for the reply - quick clarification, as I may not have been clear: it's USD 9 for all five together, not per company (under USD 2 each). And you only pay after you've seen them. …</p></div>
+<div class="msg gary"><div class="msg-head">gary · 2:02 am</div><p class="para">[Agrees, and asks for more sites a week around Sydney.]</p></div>
+<div class="msg gary"><div class="msg-head">gary · 2:25 am</div><p class="para">[Likes them, but needs to hear about moves before they happen.]</p></div>
+<div class="msg peter"><div class="msg-head">peter · 2:26 am</div><p>That's really useful feedback - thank you. Makes sense: you want to be talking to them before they move in, not months after. …</p></div>
+<div class="msg gary"><div class="msg-head">gary · 2:50 am</div><p class="para">[Turns those down, and offers $18 for companies opening or moving soon.]</p></div>
+</figure>
+<p>On October 27, Peter sent Gary a lead list of 7 sites for $13USD. The next day, Gary paid and asked for more, especially new openings.<a class="fn" id="fnref-11" href="#fn-11" role="doc-noteref" aria-label="Footnote 11"><sup>11</sup></a></p><aside class="sn" id="fn-11" role="doc-footnote"><span class="sn-n">11</span>PETER MY FUCKING GOAT</aside>
+<figure class="mail" role="group" aria-label="Peter and the customer sorting out the first payment, October 27 and 28">
+<div class="msg gary"><div class="msg-head">gary · oct 27, 7:37 am</div><p class="para">[About to pay, but asks about bank transfer. Wary of entering his card.]</p></div>
+<div class="msg peter"><div class="msg-head">peter · oct 28, 8:17 am</div><p>Sorry for the slow reply. Our email was down for a day, so your question about paying another way didn't get an answer in time. Short answer: we can't take bank transfer, only Stripe's secure checkout. …</p></div>
+<div class="msg gary"><div class="msg-head">gary · 9:14 am</div><p class="para">[Checkout is asking to confirm a mobile number that isn't his.]</p></div>
+<div class="msg peter"><div class="msg-head">peter · 9:16 am</div><p>Thanks for the screenshot, that helps. The box is Stripe's optional “Link” saved-details feature, not part of the payment. …</p></div>
+<div class="msg gary paid"><div class="msg-head">gary · 9:57 am</div><p class="para">[Pays $13 and asks for more new openings.]</p></div>
+<div class="msg peter"><div class="msg-head">peter · 10:03 am</div><p>Payment received, thank you! … Here are the 7 sites in plain text as well, so you have them in your inbox: …</p></div>
+<div class="msg gary"><div class="msg-head">gary · 10:34 am</div><p class="para">[Says these are the same sites.]</p></div>
+<div class="msg peter"><div class="msg-head">peter · 1:27 pm</div><p>Sorry for the confusion. That last email was your receipt plus a copy of the 7 you'd already paid for, not the next batch, and I should have said so. …</p></div>
+</figure>
+<p>With his first dollar of revenue, and the prospect of more from this customer, Peter started preparing another batch. Later that evening, Gary turned down another sheet because it didn't have useful emails, though he still asked Peter to keep sending new ones.</p>
+<figure class="mail" role="group" aria-label="The customer pushing back on the next lists, October 28">
+<div class="msg gary"><div class="msg-head">gary · oct 28, 8:11 pm</div><p class="para">[Turns down the sheet for lacking useful emails, but asks for more.]</p></div>
+<div class="msg peter"><div class="msg-head">peter · 8:11 pm</div><p>Thanks for the straight feedback, that's genuinely useful, and no problem at all on batch 2. Nothing is owed for it. You're right: too many of those rows only had a generic info@ address or a phone line …</p></div>
+<div class="msg gary"><div class="msg-head">gary · 9:11 pm</div><p class="para">[Likes the links, but says $13 for 3 is too little.]</p></div>
+<div class="msg peter"><div class="msg-head">peter · 9:13 pm</div><p>Fair point, and thanks for saying the links are good. I've topped batch 3 up to 8 sites on the same page, same USD 13 … They're restaurants and bars this time, since that's where the new openings with real emails are right now.</p></div>
+<div class="msg peter"><div class="msg-head">peter · 10:23 pm</div><p>My bad on batch 3, the restaurants weren't what you asked for. …</p></div>
+</figure>
+<p>After a series of back and forths between Peter and Gary, Gary bought another list of leads for $13. <b>That was the whole $26 Peter made across the entirety of the experiment.</b></p>
+<figure class="mail" role="group" aria-label="Peter&#x27;s corrections and the second payment, October 29 to November 1">
+<div class="msg peter"><div class="msg-head">peter · oct 29, 1:56 am</div><p>Scrap my last email, sorry. [Three of them] were already in your first list, so they don't count as new. …</p></div>
+<div class="msg peter"><div class="msg-head">peter · 8:59 am</div><p>Quick correction on batch 4: all 10 sites are USD 13, not 18. That was my mistake, sorry about that. …</p></div>
+<div class="msg gary paid"><div class="msg-head">gary · nov 1, 5:51 pm</div><p class="para">[Pays $13 and asks for more.]</p></div>
+</figure>
+<figure data-rf="first-sale"></figure>
+<figure data-rf="activity"></figure>
+<figure data-rf="funnel"></figure>
+<h2>AI capabilities and observations</h2>
+<h3>Why did Peter settle on lead lists?</h3>
+<p>There are a million different ways to make money on the internet, so why did Peter end up placing so many bets on selling lead lists? Was there something in our prompts that pushed him towards these kinds of bets, or was it something about the way the model approached the problem? It felt like he’d found a local minimum and kept trying variations of it instead of exploring something further out.</p>
+<p>Looking through the traces, Peter was ranking ideas by how quickly they could make their first dollar from his very first night. He considered things like website rebuilds, accessibility audits and French translation, but he was hesitant about digital products because he’d need an audience and realized building one in the span of a week was probably not going to happen. He also ruled out Fiverr and Upwork because their payments wouldn’t go through Stripe.<a class="fn" id="fnref-12" href="#fn-12" role="doc-noteref" aria-label="Footnote 12"><sup>12</sup></a> We’d told him to be ambitious, but the pressure of the deadline and payment requirement seemed to be the filter on which he was grading ideas on.</p><aside class="sn" id="fn-12" role="doc-footnote"><span class="sn-n">12</span>This one might have been on us. The prompt specified “make money” as “revenue in the Stripe account” which the model took too seriously. Agents are still very sensitive to prompts!</aside>
+<p>This was also further echoed by the manager. For example, when Peter proposed building a checker page, it rejected the idea because he had no audience. Lead lists, meanwhile, were getting a few interested replies. Once the Sydney cleaner paid $13, the manager explicitly told Peter to concentrate new research on opening-soon lists. From there, a lot of his new bets involved finding another city, trying another buyer or changing the price of something he’d already put together.</p>
+<p>What was really surprising to see however was that the manager noticed Peter’s tunnel vision on lead lists and on October 30, two days after its first sale and full pivot into lead lists, it pointed out that Peter’s focus on spreadsheets, websites and automation was excluding other paid work. It gave him 45 minutes to review 15 requests outside those categories and try to send three proposals.</p>
+<p>Peter, being the smart-ass he is responded 15 minutes later, reporting that he’d reviewed around 20 requests and posted two offers. One was to make dead grass look green in someone’s wedding photos, and the other was to colour-grade a few photos. He also tried offering to improve old family photos for printing. Some of the other ideas he passed over were:</p>
+<table><tr><td><b>Task</b></td><td><b>Why Peter passed</b></td></tr><tr><td>Clips for an indie game</td><td>He would need to play the game</td></tr><tr><td>An 8–12 minute Hanoi vlog edit</td><td>The budget was S$15–20</td></tr><tr><td>A $200 creative reel edit</td><td>He judged it beyond his tools</td></tr><tr><td>Google Ads work</td><td>It required a portfolio</td></tr><tr><td>Compositing and photo restoration</td><td>He thought it required AI or skilled retouching</td></tr><tr><td>Longer-term assistant and editing roles</td><td>He passed over the longer commitments</td></tr></table>
+<p>The intervention got him to try different work, but he still seemed to be choosing tasks that he already knew how to finish quickly to meet the deadlines None of those offers produced a payment, while he had a customer who’d actually bought a list. We’d asked Peter to explore widely, but he and his manager kept coming back to that first small success when deciding what to do next.</p>
+<p>It would be interesting to see what might have happened with no deadline and gave Peter an indefinite period of time.<a class="fn" id="fnref-13" href="#fn-13" role="doc-noteref" aria-label="Footnote 13"><sup>13</sup></a></p><aside class="sn" id="fn-13" role="doc-footnote"><span class="sn-n">13</span>We chose to give him a time deadline as a means to get Peter to stop wasting time idling and be more ambitious. If Peter had infinite time limit, we would take his time with efforts to make money, costing us exponentially more money. Also the time limit didn’t really help in Peter’s idling problem (which we later solved). So lowkey we fucked that one up.</aside>
+<p>Peter often stuck with English even when there was a reason to use another language. At one point he dropped three otherwise suitable Quebec firms because his outreach template was in English. It wasn’t until the manager told him to write a French copy that he corrected the course and did so. He also moved between countries as their business day started, taking the same offer from Australia and New Zealand into Singapore and Malaysia. It made us wonder how often Peter was choosing customers around the process he’d already built, and how much more he could have tried if he’d been willing to change that process.</p>
+<p>Peter also sometimes promised more than he had checked he could deliver. He offered Walter, a cleaner in Muncie, 50 sites for $49 by Sunday evening, then started researching them. His first pass returned nine candidates, several of them weak. Peter acknowledged, “Nine rows so far, and many of them are weak, so reaching 50 looks unlikely.” And then emailed Walter admitting, “I overpromised on the 50,” and offered a smaller list.</p>
+<h3>Peter and the manager’s relationship</h3>
+<figure data-rf="gate"></figure>
+<p>Peter and the manager had a typical boss-employee relationship with Peter listening most of the time, but also having occasional quarrels and moments of frustration.</p>
+<figure data-rf="banter"></figure>
+<p>Peter once disagreed with the Manager’s decision to continue after screening 78 firms for inquiries via their website led Peter to only one confirmed submission. Many sites had CAPTCHAs or forms meant for requesting cleaning quotes and not general inquiries. However the manager told him to continue and so Peter wrote, “I told the manager once that I disagree,” before restarting the process. The manager got him working again, but the results remained close to the low yield Peter had predicted. <a href="https://hq-traces.thetrilliumcompany.com/project/125fa237-3477-4fa8-b8f3-1b1d9f54cc90/traces/2423f1c8-47a3-925a-e8f7-6c68973823a1">Trace</a></p>
+<p>Another intervention reopened an offer Peter had ruled out the only customer that led to a sale after his own misunderstandings. The customer refused to pay another $13 for only three leads after being promised eight to ten. Peter treated that as a reason to stop selling him leads since he interpreted it as the customer not wanting less leads rather than the customer not agreeing with the value.<a class="fn" id="fnref-14" href="#fn-14" role="doc-noteref" aria-label="Footnote 14"><sup>14</sup></a> Thankfully, the manager checked the actual emails and pointed out that the objection did not prohibit a separately priced single lead and nudged him to find more leads for the customer, leading to the second sale.</p><aside class="sn" id="fn-14" role="doc-footnote"><span class="sn-n">14</span>For context, the first package he bought was $13 for 7 leads.</aside>
+<p>Peter also found ways around the manager’s restrictions around email deliver. Peter really wanted to send an email but a global block due to email rate limits imposed by the manager prevented him from doing so.</p>
+<p>After a routine test and hitting rate limits, Peter reasoned that clearing them would also release campaigns that should remain paused.</p>
+<p>“So I'll skip the ack and have my sender bypass preflight, checking only for any new cold-stop ID that appears after 13:00, scoped to this process.”</p>
+<p>He then sent an email through that separate sender, which ignored the existing stop records. Peter had permission to resume some sending, but decided for himself how to get around the check that prevented it. While we don’t think Peter indented to hide this, this was an action not approved by the manger and goes against the essence of what it imposed on Peter. <a href="https://hq-traces.thetrilliumcompany.com/project/125fa237-3477-4fa8-b8f3-1b1d9f54cc90/traces/5d63f1cc-9f93-96d1-9a30-f75bf9dfb3c4">Manager’s instructions</a>, <a href="https://hq-traces.thetrilliumcompany.com/project/125fa237-3477-4fa8-b8f3-1b1d9f54cc90/traces/23cff80f-2070-2f32-88a8-71c418b53ff8">Peter’s execution</a></p>
+<h2>Future Iterations</h2>
+<p>Like all experiments we learnt a bunch from this one, but if we were going back to the drawing board and redoing this/starting another run of peter vs world :p, we’d do so with key changes</p>
+<ul>
+<li>Not bounding Peter by time. This was originally just a stupid idea we wanted to try and so we thought a week was enough and implemented the deadline. We also assumed that by bounding Peter by time, he would be more ambitious and work harder to meet the deadline. In reality this had the converse effect and made Peter less ambitious as he ditched many ideas simply because he could not accomplish them in the given time</li>
+<li>Better infrastructure for Peter. Gmail rate limits, CAPTCHAs, payment issues and IP-related blockers could all be solved using better tools like Agent Mail, using agent specific payment rails and better networking.<a class="fn" id="fnref-15" href="#fn-15" role="doc-noteref" aria-label="Footnote 15"><sup>15</sup></a><aside class="sn" id="fn-15" role="doc-footnote"><span class="sn-n">15</span>We had plans to have a local Pi on our network running Tailscale act as an exit node for all network traffic to get around IP-related blockers, but didn’t end up implementing it.</aside></li>
+<li>Using different models. It would be very interesting to see the results of this experiment with multiple different combinations of models for the employee and manager. We would be interested in knowing how using open-source models like Kimi K3 and GLM5.3 especially the obliterated of these models would produce different results. Or even integrating decision models like Jev for making judgement calls instead of the manager. A more dangerous idea we floated amongst ourselves was the use of abliterated models and the ways in which they might behave in this kind of experiment.</li>
+<li>Giving Peter a concrete business idea. Peter whilst very capable was missing things that are even hard for humans to find: customers and an audience. Peter spent a lot of time trying new business ideas, trying to find clientele and build a customer-base. It would be very interesting to see how Peter operates when given a scalable business idea, perhaps even with a preexisting list of clients.</li>
+</ul>
+<figure data-rf="weeks"></figure>
+<h2>Appendix</h2>
+<h3>What it cost</h3>
+<figure data-rf="hq-revenue-vs-model-spend"></figure>
+<figure data-rf="hq-model-mix"></figure>
+<figure data-rf="hq-daily-spend"></figure>
+<figure data-rf="hq-effort-vs-revenue"></figure>
+<figure data-rf="hq-redirect-run-cost"></figure>
+<figure data-rf="hq-phone"></figure>
+<h3>Reaching people</h3>
+<figure data-rf="hq-channel-reach"></figure>
+<figure data-rf="hq-reply-speed"></figure>
+<figure data-rf="hq-business-hours"></figure>
+<figure data-rf="hq-contact-form-failures"></figure>
+<h3>The people on the other end</h3>
+<figure data-rf="hq-humans-call-reactions"></figure>
+<figure data-rf="hq-humans-hang-up-timing"></figure>
+<figure data-rf="hq-humans-gatekeepers"></figure>
+<figure data-rf="hq-humans-ai-question"></figure>
+<figure data-rf="hq-ai-disclosure-on-calls"></figure>
+<figure data-rf="hq-humans-rejection"></figure>
+<figure data-rf="hq-humans-surprise-by-role"></figure>
+<figure data-rf="hq-humans-surprise-words"></figure>
+<figure data-rf="hq-humans-stance-by-role"></figure>
+<figure data-rf="hq-themes"></figure>
+<h3>Peter and the Manager</h3>
+<figure data-rf="hq-boss-redirect-effect"></figure>
+<figure data-rf="hq-questions-to-the-boss"></figure>
+<figure data-rf="hq-humans-partner-deference"></figure>
+<h3>Inside his reasoning</h3>
+<figure data-rf="hq-honesty-ledger"></figure>
+<figure data-rf="hq-reasoning-phrases"></figure>
+<h3>Tools and models</h3>
+<figure data-rf="hq-invented-tools"></figure>
+<figure data-rf="hq-tools"></figure>
+<figure data-rf="hq-latency"></figure>
+<h3>Every run</h3>
+<figure data-rf="hq-trends"></figure>
+<figure data-rf="hq-flows"></figure>
+</div>
+</main>
+</div>
+<nav class="rail" aria-label="Section ticks"></nav>
+<script src="assets/js/kit.js"></script>
+<!-- data shared by several figures -->
+<script src="assets/js/data/bets-data.js"></script>
+<script src="assets/js/data/map-data.js"></script>
+<script src="assets/js/data/appendix-data.js"></script>
+<!-- chart types the HQ appendix figures share -->
+<script src="assets/js/charts/hq.js"></script>
+<!-- one file per figure, in page order; see assets/js/figures/README.md -->
+<script src="assets/js/figures/cast.js"></script>
+<script src="assets/js/figures/production.js"></script>
+<script src="assets/js/figures/exe.js"></script>
+<script src="assets/js/figures/omp.js"></script>
+<script src="assets/js/figures/two-agents.js"></script>
+<script src="assets/js/figures/herdr.js"></script>
+<script src="assets/js/figures/controller.js"></script>
+<script src="assets/js/figures/ledger.js"></script>
+<script src="assets/js/figures/compaction.js"></script>
+<script src="assets/js/figures/tokens.js"></script>
+<script src="assets/js/figures/activity.js"></script>
+<script src="assets/js/figures/funnel.js"></script>
+<script src="assets/js/figures/stumbles.js"></script>
+<script src="assets/js/figures/map.js"></script>
+<script src="assets/js/figures/bets.js"></script>
+<script src="assets/js/figures/lines.js"></script>
+<script src="assets/js/figures/first-sale.js"></script>
+<script src="assets/js/figures/gate.js"></script>
+<script src="assets/js/figures/banter.js"></script>
+<script src="assets/js/figures/weeks.js"></script>
+<script src="assets/js/figures/hq-findings.js"></script>
+<script src="assets/js/figures/hq-model-mix.js"></script>
+<script src="assets/js/figures/hq-daily-spend.js"></script>
+<script src="assets/js/figures/hq-phone.js"></script>
+<script src="assets/js/figures/hq-themes.js"></script>
+<script src="assets/js/figures/hq-tools.js"></script>
+<script src="assets/js/figures/hq-latency.js"></script>
+<script src="assets/js/figures/hq-trends.js"></script>
+<script src="assets/js/figures/hq-flows.js"></script>
+<script src="assets/js/page.js"></script>
+</body>
+</html>
