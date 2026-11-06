@@ -10,7 +10,7 @@
     ["oct 27, 2:04 am", "peter", "customer", "a free sample of sites"],
     ["2:25 am", "customer", "peter", "likes it, wants more notice"],
     ["3:07 am", "peter", "customer", "7 sites opening soon, $13"],
-    ["oct 28, 9:55 am", "customer", "peter", "pays $13, asks for more", "pay"],
+    ["oct 28, 9:55 am", "customer", "peter", "pays $13: “PAID MATE keep them coming!”", "pay"],
     ["8:11 pm", "customer", "peter", "turns down the next sheet"],
     ["9:11 pm", "customer", "peter", "won't pay $13 for three leads"],
     ["oct 29", "peter", "self", "catches repeat sites, pulls a link"],
